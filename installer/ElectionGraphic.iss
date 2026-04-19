@@ -36,10 +36,17 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 ; App payload (offline)
 Source: "payload\app\*"; DestDir: "{app}\app"; Flags: recursesubdirs ignoreversion
 ; Private Node runtime
-Source: "payload\runtime\node\*"; DestDir: "{app}\runtime\node"; Flags: recursesubdirs ignoreversion
+Source: "payload\runtime\node\node.exe"; DestDir: "{app}\runtime\node"; Flags: ignoreversion
+Source: "payload\runtime\node\*"; DestDir: "{app}\runtime\node"; Flags: recursesubdirs ignoreversion; Excludes: "node.exe"
 ; WinSW service wrapper + config
 Source: "payload\runtime\winsw\{#ServiceExe}"; DestDir: "{app}\runtime\winsw"; Flags: ignoreversion
 Source: "payload\runtime\winsw\{#ServiceId}.xml"; DestDir: "{app}\runtime\winsw"; Flags: ignoreversion
+; Service launcher (builds if needed, then starts Next)
+Source: "runtime\service.js"; DestDir: "{app}\runtime\service"; Flags: ignoreversion
+
+[Dirs]
+Name: "{app}\runtime\winsw\logs"
+Name: "{app}\runtime\service"
 
 [Icons]
 Name: "{group}\{#AppName}"; Filename: "http://localhost:16000"; IconFilename: "{app}\app\public\favicon.ico"; Flags: createonlyiffileexists
@@ -61,27 +68,34 @@ end;
 
 procedure ReplaceInFile(const FileName, FindText, ReplaceText: string);
 var
-  S: string;
+  A: AnsiString;
+  U: string;
 begin
-  if LoadStringFromFile(FileName, S) then
+  if LoadStringFromFile(FileName, A) then
   begin
-    StringChangeEx(S, FindText, ReplaceText, True);
-    SaveStringToFile(FileName, S, False);
+    U := String(A);
+    StringChangeEx(U, FindText, ReplaceText, True);
+    A := AnsiString(U);
+    SaveStringToFile(FileName, A, False);
   end;
 end;
 
 procedure CurStepChanged(CurStep: TSetupStep);
 begin
-  if CurStep = ssInstall then
-  begin
-    if not FileExistsInInstall('runtime\node\node.exe') then
-      MsgBox('Node runtime missing: runtime\node\node.exe. Put Node 23.11.1 files into installer\payload\runtime\node before compiling.', mbError, MB_OK);
-    if not FileExistsInInstall('runtime\winsw\' + '{#ServiceExe}') then
-      MsgBox('WinSW missing: runtime\winsw\' + '{#ServiceExe}' + '. Put WinSW into installer\payload\runtime\winsw before compiling.', mbError, MB_OK);
-  end;
-
   if CurStep = ssPostInstall then
   begin
+    if not FileExistsInInstall('runtime\node\node.exe') then
+    begin
+      MsgBox('Node runtime missing in installation folder. This installer package is incomplete.', mbCriticalError, MB_OK);
+      RaiseException('Node runtime missing.');
+    end;
+
+    if not FileExistsInInstall('runtime\winsw\' + '{#ServiceExe}') then
+    begin
+      MsgBox('WinSW service wrapper missing in installation folder. This installer package is incomplete.', mbCriticalError, MB_OK);
+      RaiseException('WinSW missing.');
+    end;
+
     // Make the app/browser title match the installer build name.
     ReplaceInFile(ExpandConstant('{app}\runtime\winsw\{#ServiceId}.xml'), '__APP_TITLE__', '{#BuildName}');
   end;
