@@ -124,14 +124,16 @@ export default function PartySeats({
 
           <div className="party-card-content">
             <div className="party-header">
-              <div className="meta-symbol" aria-hidden="true">
-                <Image
-                  src="/wb.png"
-                  alt="West Bengal"
-                  width={72}
-                  height={72}
-                  className="meta-symbol-image"
-                />
+              <div className="party-symbol party-symbol--featured meta-symbol" aria-hidden="true">
+                <span className="party-symbol-icon meta-symbol-icon">
+                  <Image
+                    src="/wb.png"
+                    alt="West Bengal"
+                    width={72}
+                    height={72}
+                    className="meta-symbol-image"
+                  />
+                </span>
               </div>
               <div className="party-name party-name--meta">{stateName}</div>
             </div>

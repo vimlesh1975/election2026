@@ -287,14 +287,15 @@ body {
 }
 
 .meta-symbol {
-  width: 112px;
-  height: 112px;
-  border-radius: 8px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  background: transparent;
-  flex: 0 0 auto;
+  color: #ffffff;
+}
+
+.meta-symbol-icon {
+  background: rgba(255,255,255,0.18);
+  border: 1px solid rgba(255,255,255,0.22);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.14),
+    0 10px 24px rgba(0,0,0,0.22);
 }
 
 .meta-symbol-image {
@@ -393,10 +394,6 @@ body {
   flex: 0 0 auto;
   position: relative;
   overflow: hidden;
-}
-
-.party-card--meta .party-symbol-icon {
-  background: transparent !important;
 }
 
 .party-symbol-icon svg {
