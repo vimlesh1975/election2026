@@ -1,14 +1,34 @@
 import net from 'net';
 import { NextResponse } from 'next/server';
 
+const templateConfigs = {
+  partySeats: {
+    layer: 20,
+    path: '/template',
+  },
+  winnerPhoto: {
+    layer: 21,
+    path: '/winner-template',
+  },
+};
+
 export async function POST(request) {
   try {
-    const { command, data } = await request.json();
+    const { command, data, template = 'partySeats' } = await request.json();
     const origin = new URL(request.url).origin;
     
     // CasparCG standard configuration
     const channel = 1;
-    const layer = 20;
+    const selectedTemplate = templateConfigs[template];
+
+    if (!selectedTemplate) {
+      return NextResponse.json(
+        { success: false, error: `Unknown template: ${template}` },
+        { status: 400 },
+      );
+    }
+
+    const { layer, path } = selectedTemplate;
 
     return new Promise((resolve) => {
       const client = new net.Socket();
@@ -23,7 +43,7 @@ export async function POST(request) {
         if (command === 'play') {
           // Play triggers the graphic to load with the payload data
           // We assume local caspar server running on the same machine
-          const url = `${origin}/template`;
+          const url = `${origin}${path}`;
           amcpCmd = `CG ${channel}-${layer} ADD 1 "${url}" 1 "${payload}"\r\n`;
         } else if (command === 'update') {
           amcpCmd = `CG ${channel}-${layer} UPDATE 1 "${payload}"\r\n`;

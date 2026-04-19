@@ -35,6 +35,16 @@ body {
   padding: 80px;
 }
 
+.winner-template-container {
+  width: 1920px;
+  height: 1080px;
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-start;
+  padding: 70px 70px 380px;
+}
+
 .graphic-wrapper {
   opacity: 0;
   transform: translateY(60px);
@@ -47,29 +57,225 @@ body {
   transform: translateY(0);
 }
 
+.winner-photo-wrapper {
+  opacity: 0;
+  transform: translateX(-70px) scale(0.96);
+  transition:
+    opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.winner-photo-wrapper.is-playing {
+  opacity: 1;
+  transform: translateX(0) scale(1);
+}
+
+.winner-photo-card {
+  width: 360px;
+  min-height: 520px;
+  border-radius: 28px;
+  padding: 26px 26px 30px;
+  position: relative;
+  overflow: hidden;
+  background:
+    linear-gradient(140deg, rgba(15, 23, 42, 0.92), rgba(30, 41, 59, 0.82)),
+    radial-gradient(circle at top left, rgba(59, 130, 246, 0.22), transparent 42%);
+  border: 1px solid rgba(255,255,255,0.16);
+  box-shadow:
+    0 24px 60px rgba(0,0,0,0.38),
+    inset 0 1px 0 rgba(255,255,255,0.12);
+  backdrop-filter: blur(22px);
+  -webkit-backdrop-filter: blur(22px);
+  transition: box-shadow 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.winner-photo-card.is-transitioning {
+  box-shadow:
+    0 12px 30px rgba(0,0,0,0.24),
+    inset 0 1px 0 rgba(255,255,255,0.08);
+}
+
+.winner-photo-card::before {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 12px;
+  background: linear-gradient(90deg, #38bdf8, #2563eb);
+  box-shadow: 0 0 24px rgba(56,189,248,0.7);
+}
+
+.winner-photo-card-glow {
+  position: absolute;
+  inset: -18% auto auto 50%;
+  width: 320px;
+  height: 320px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(56, 189, 248, 0.28), transparent 68%);
+  pointer-events: none;
+  transform: translateX(-50%);
+}
+
+.winner-photo-layer {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.winner-photo-frame {
+  width: 100%;
+  height: 320px;
+  border-radius: 22px;
+  overflow: hidden;
+  position: relative;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.18);
+  box-shadow:
+    0 16px 36px rgba(0,0,0,0.32),
+    inset 0 1px 0 rgba(255,255,255,0.14);
+  transition:
+    transform 0.52s cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 0.52s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.winner-photo-card.is-animating-in .winner-photo-frame {
+  animation: winnerPhotoIn 0.52s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.winner-photo-image {
+  object-fit: cover;
+}
+
+.winner-photo-copy {
+  width: 100%;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 18px;
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  padding-top: 12px;
+}
+
+.winner-photo-name,
+.winner-photo-result {
+  transition:
+    transform 0.52s cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 0.52s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.winner-photo-name {
+  width: 100%;
+  font-size: 30px;
+  line-height: 1.08;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #ffffff;
+  text-shadow: 0 10px 24px rgba(0,0,0,0.35);
+  word-break: break-word;
+  opacity: 0.96;
+}
+
+.winner-photo-card.is-animating-in .winner-photo-name {
+  animation: winnerNameIn 0.52s cubic-bezier(0.16, 1, 0.3, 1);
+  animation-delay: 0.08s;
+}
+
+.winner-photo-result {
+  display: inline-flex;
+  align-self: center;
+  max-width: 100%;
+  padding: 16px 24px;
+  border-radius: 14px;
+  background: rgba(37, 99, 235, 0.24);
+  border: 1px solid rgba(147, 197, 253, 0.42);
+  color: #dbeafe;
+  font-size: 34px;
+  line-height: 1.08;
+  font-weight: 800;
+  text-transform: uppercase;
+  box-shadow: 0 12px 28px rgba(2, 6, 23, 0.3);
+  text-align: center;
+}
+
+.winner-photo-card.is-animating-in .winner-photo-result {
+  animation: winnerResultIn 0.52s cubic-bezier(0.16, 1, 0.3, 1);
+  animation-delay: 0.16s;
+}
+
+@keyframes winnerPhotoIn {
+  from {
+    transform: translateY(36px) scale(0.97);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes winnerNameIn {
+  from {
+    transform: translateY(24px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes winnerResultIn {
+  from {
+    transform: translateY(18px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
 .graphic-wrapper.is-playing .total-seats-badge {
   animation: badgePulse 4.8s ease-in-out infinite;
 }
 
 .graphic-wrapper.is-playing .party-card {
   animation:
-    cardDrift 6s ease-in-out infinite;
+    partyCardSweep 5s ease-in-out infinite;
+}
+
+.graphic-wrapper.is-playing .party-card:nth-child(1) {
+  animation-delay: 0s;
 }
 
 .graphic-wrapper.is-playing .party-card:nth-child(2) {
-  animation-delay: 0.6s;
+  animation-delay: 0.45s;
 }
 
 .graphic-wrapper.is-playing .party-card:nth-child(3) {
-  animation-delay: 1.2s;
+  animation-delay: 0.9s;
 }
 
 .graphic-wrapper.is-playing .party-card:nth-child(4) {
-  animation-delay: 1.8s;
+  animation-delay: 1.35s;
 }
 
 .graphic-wrapper.is-playing .party-card:nth-child(5) {
-  animation-delay: 2.4s;
+  animation-delay: 1.8s;
+}
+
+.graphic-wrapper.is-playing .party-card:nth-child(6) {
+  animation-delay: 2.25s;
 }
 
 .graphic-wrapper.is-playing .party-card-bg-glow {
@@ -482,13 +688,28 @@ body {
   overflow: hidden;
 }
 
-@keyframes cardDrift {
+@keyframes partyCardSweep {
   0%, 100% {
     transform: translateY(0);
+    box-shadow: 0 24px 48px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.1);
   }
 
-  50% {
-    transform: translateY(-8px);
+  12% {
+    transform: translateX(0) translateY(0) scale(1);
+    box-shadow: 0 24px 48px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.1);
+  }
+
+  28% {
+    transform: translateX(22px) translateY(-10px) scale(1.02);
+    box-shadow:
+      0 30px 56px rgba(0,0,0,0.46),
+      0 0 28px color-mix(in srgb, var(--party-color, #fff) 30%, transparent),
+      inset 0 1px 0 rgba(255,255,255,0.14);
+  }
+
+  44% {
+    transform: translateX(0) translateY(0) scale(1);
+    box-shadow: 0 24px 48px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.1);
   }
 }
 
