@@ -45,7 +45,6 @@ next-env.d.ts
 
 # offline installer build artifacts / payloads
 installer/dist/*
-!installer/dist/*.exe
 installer/dist/*.log
 installer/payload/app/
 installer/payload/runtime/node/
