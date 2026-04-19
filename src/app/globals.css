@@ -122,14 +122,24 @@ body {
   z-index: 2;
 }
 
+.party-header {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  min-width: 0;
+}
+
 .party-name {
   font-size: 28px;
   font-weight: 700;
   color: #f8fafc;
-  text-align: center;
+  text-align: left;
   text-transform: uppercase;
   letter-spacing: 1px;
   line-height: 1.15;
+  min-width: 0;
 }
 
 .party-name-bn {
@@ -159,8 +169,9 @@ body {
 }
 
 .party-symbol--featured {
-  min-width: 0;
-  max-width: 100%;
+  min-width: 64px;
+  max-width: 64px;
+  justify-content: center;
 }
 
 .party-symbol-icon {

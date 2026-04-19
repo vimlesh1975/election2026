@@ -134,29 +134,26 @@ export default function PartySeats({ parties = [], isPlaying = false }) {
               <div className="party-card-bg-glow"></div>
               
               <div className="party-card-content">
-                {party.symbol ? (
-                  <div className="party-symbol party-symbol--featured">
-                    <span className="party-symbol-icon" aria-hidden="true">
-                      {party.symbolImage ? (
-                        <Image
-                          src={party.symbolImage}
-                          alt={party.symbol}
-                          width={30}
-                          height={30}
-                          className="party-symbol-image"
-                        />
-                      ) : (
-                        <SymbolIcon symbol={party.symbol} />
-                      )}
-                    </span>
-                    <span className="party-symbol-copy">
-                      <span className="party-symbol-label">{party.symbol}</span>
-                      {party.bengaliSymbol ? <span className="party-symbol-label-bn">{party.bengaliSymbol}</span> : null}
-                    </span>
-                  </div>
-                ) : null}
-                <div className="party-name">{party.shortName || party.name}</div>
-                {party.bengaliName ? <div className="party-name-bn">{party.bengaliName}</div> : null}
+                <div className="party-header">
+                  {party.symbol ? (
+                    <div className="party-symbol party-symbol--featured">
+                      <span className="party-symbol-icon" aria-hidden="true">
+                        {party.symbolImage ? (
+                          <Image
+                            src={party.symbolImage}
+                            alt={party.symbol}
+                            width={30}
+                            height={30}
+                            className="party-symbol-image"
+                          />
+                        ) : (
+                          <SymbolIcon symbol={party.symbol} />
+                        )}
+                      </span>
+                    </div>
+                  ) : null}
+                  <div className="party-name">{party.shortName || party.name}</div>
+                </div>
                 <div className="party-score" style={{ textShadow: `0 0 32px ${party.color}40` }}>
                   <AnimatedScore value={activeSeats} />
                 </div>

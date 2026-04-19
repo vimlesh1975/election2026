@@ -82,7 +82,9 @@ export default function Dashboard() {
               display: 'grid',
               gap: '12px',
               alignItems: 'center',
-              gridTemplateColumns: '56px minmax(0,1.5fr) minmax(0,1fr) 110px 56px',
+              gridTemplateColumns: '56px 70px 100px',
+              justifyContent: 'start',
+              width: '100%',
             }}
           >
             <div
@@ -124,19 +126,7 @@ export default function Dashboard() {
               onChange={(e) => updateParty(i, 'shortName', e.target.value)}
               placeholder="Short name"
               style={{
-                padding: '12px',
-                background: 'rgba(0,0,0,0.5)',
-                border: '1px solid rgba(255,255,255,0.2)',
-                color: 'white',
-                borderRadius: '8px',
-              }}
-            />
-            <input
-              type="text"
-              value={party.symbol || ''}
-              onChange={(e) => updateParty(i, 'symbol', e.target.value)}
-              placeholder="Party symbol"
-              style={{
+                width: '70px',
                 padding: '12px',
                 background: 'rgba(0,0,0,0.5)',
                 border: '1px solid rgba(255,255,255,0.2)',
@@ -156,19 +146,6 @@ export default function Dashboard() {
                 border: '1px solid rgba(255,255,255,0.2)',
                 color: 'white',
                 borderRadius: '8px',
-              }}
-            />
-            <input
-              type="color"
-              value={party.color}
-              onChange={(e) => updateParty(i, 'color', e.target.value)}
-              style={{
-                width: '50px',
-                height: '46px',
-                padding: '0',
-                border: 'none',
-                borderRadius: '8px',
-                cursor: 'pointer',
               }}
             />
           </div>
