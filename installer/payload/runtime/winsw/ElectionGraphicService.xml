@@ -1,0 +1,19 @@
+<service>
+  <id>ElectionGraphicService</id>
+  <name>Election Graphic Service</name>
+  <description>CasparCG Election Next.js graphics service on port 16000.</description>
+  <startmode>Automatic</startmode>
+
+  <!-- Keep exe + xml together. The installer places the app under {app}\app -->
+  <workingdirectory>%BASE%\..\..\app</workingdirectory>
+  <executable>%BASE%\..\node\node.exe</executable>
+  <arguments>node_modules\next\dist\bin\next start -p 16000</arguments>
+
+  <log mode="roll-by-size">
+    <sizeThreshold>10240</sizeThreshold>
+    <keepFiles>10</keepFiles>
+  </log>
+
+  <env name="NODE_ENV" value="production" />
+  <env name="APP_TITLE" value="__APP_TITLE__" />
+</service>

@@ -1,10 +1,13 @@
 import './globals.css';
 import Script from 'next/script';
 
-export const metadata = {
-  title: 'Election Graphic',
-  description: 'CasparCG HTML Producer template for election party seats',
-};
+export async function generateMetadata() {
+  const title = process.env.APP_TITLE || 'Election Graphic';
+  return {
+    title,
+    description: 'CasparCG HTML Producer template for election party seats',
+  };
+}
 
 export default function RootLayout({ children }) {
   return (

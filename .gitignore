@@ -39,3 +39,14 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# local editor settings
+.vscode/
+
+# offline installer build artifacts / payloads
+installer/dist/*
+!installer/dist/*.exe
+installer/dist/*.log
+installer/payload/app/
+installer/payload/runtime/node/
+installer/payload/runtime/winsw/*.exe
