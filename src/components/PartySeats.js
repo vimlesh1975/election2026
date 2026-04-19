@@ -118,19 +118,41 @@ export default function PartySeats({
 
   return (
     <div className={`graphic-wrapper ${isPlaying ? 'is-playing' : ''}`}>
-      <div className="header-container">
-        <div className="summary-card">
-          <div className="summary-card-value">{stateName}</div>
-          <div className="summary-card-divider"></div>
-          <div className="summary-card-stats">
-            <AnimatedScore value={isPlaying ? declaredSeats : 0} />
-            <span className="summary-card-separator">/</span>
-            <span>{activeTotalSeats}</span>
+      <div className="party-seats-container">
+        <div className="party-card party-card--meta" style={{ '--party-color': '#ffffff' }}>
+          <div className="party-card-bg-glow"></div>
+
+          <div className="party-card-content">
+            <div className="party-header">
+              <div className="meta-symbol" aria-hidden="true">
+                <Image
+                  src="/wb.png"
+                  alt="West Bengal"
+                  width={72}
+                  height={72}
+                  className="meta-symbol-image"
+                />
+              </div>
+              <div className="party-name party-name--meta">{stateName}</div>
+            </div>
+            <div className="party-score party-score--meta">
+              <span className="party-score-declared">
+                <AnimatedScore value={isPlaying ? declaredSeats : 0} />
+              </span>
+              <span className="party-score-separator">/</span>
+              <span className="party-score-total">{activeTotalSeats}</span>
+            </div>
+          </div>
+
+          <div className="party-bar-container">
+            <div
+              className="party-bar"
+              style={{
+                width: `${activeTotalSeats > 0 ? ((isPlaying ? declaredSeats : 0) / activeTotalSeats) * 100 : 0}%`,
+              }}
+            ></div>
           </div>
         </div>
-      </div>
-      
-      <div className="party-seats-container">
         {parties.map((party, index) => {
           // If playing, show actual seats. If stopped, show 0 to reset bars/numbers
           const activeSeats = isPlaying ? party.seats : 0;
@@ -150,13 +172,13 @@ export default function PartySeats({
                     <div className="party-symbol party-symbol--featured">
                       <span className="party-symbol-icon" aria-hidden="true">
                         {party.symbolImage ? (
-                        <Image
-                          src={party.symbolImage}
-                          alt={party.symbol}
-                          width={56}
-                          height={56}
-                          className="party-symbol-image"
-                        />
+                          <Image
+                            src={party.symbolImage}
+                            alt={party.symbol}
+                            width={56}
+                            height={56}
+                            className="party-symbol-image"
+                          />
                         ) : (
                           <SymbolIcon symbol={party.symbol} />
                         )}

@@ -248,12 +248,12 @@ body {
 }
 
 .party-card-content {
-  padding: 32px;
+  padding: 26px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 14px;
+  gap: 10px;
   position: relative;
   z-index: 2;
 }
@@ -276,6 +276,70 @@ body {
   letter-spacing: 0;
   line-height: 1.15;
   min-width: 0;
+}
+
+.party-name--meta {
+  font-size: 18px;
+  font-weight: 800;
+  text-align: left;
+  white-space: normal;
+  word-break: break-word;
+}
+
+.meta-symbol {
+  width: 112px;
+  height: 112px;
+  border-radius: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  flex: 0 0 auto;
+}
+
+.meta-symbol-image {
+  width: 72px;
+  height: 72px;
+  object-fit: contain;
+  display: block;
+  background: transparent;
+  filter: none;
+}
+
+.party-score--meta {
+  font-size: 56px;
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 8px;
+  flex-wrap: nowrap;
+  max-width: 100%;
+  white-space: nowrap;
+}
+
+.party-score-declared {
+  font-size: 44px;
+  font-weight: 900;
+  line-height: 1;
+  flex: 0 0 auto;
+}
+
+.party-score-separator {
+  font-size: 34px;
+  font-weight: 800;
+  opacity: 0.85;
+  line-height: 1;
+}
+
+.party-score-total {
+  font-size: 34px;
+  font-weight: 800;
+  opacity: 0.95;
+  line-height: 1;
+}
+
+.party-card--meta .party-card-content {
+  padding: 28px 24px;
 }
 
 .party-name-bn {
@@ -305,6 +369,11 @@ body {
   position: relative;
 }
 
+.party-card--meta .party-symbol {
+  background: transparent !important;
+  border-color: rgba(255,255,255,0.12);
+}
+
 .party-symbol--featured {
   min-width: 112px;
   max-width: 112px;
@@ -324,6 +393,10 @@ body {
   flex: 0 0 auto;
   position: relative;
   overflow: hidden;
+}
+
+.party-card--meta .party-symbol-icon {
+  background: transparent !important;
 }
 
 .party-symbol-icon svg {
@@ -393,7 +466,7 @@ body {
 
 .party-bar-container {
   width: 100%;
-  height: 12px;
+  height: 10px;
   background: rgba(0,0,0,0.5);
   margin-top: auto;
   position: relative;

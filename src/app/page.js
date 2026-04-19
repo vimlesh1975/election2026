@@ -87,10 +87,33 @@ export default function Dashboard() {
           style={{
             display: 'grid',
             gap: '12px',
-            gridTemplateColumns: '220px 120px',
+            gridTemplateColumns: '56px 220px 120px',
             justifyContent: 'start',
           }}
         >
+          <div
+            style={{
+              width: '56px',
+              height: '56px',
+              borderRadius: '8px',
+              background: 'rgba(255,255,255,0.08)',
+              border: '1px solid rgba(255,255,255,0.16)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              padding: '6px',
+            }}
+            aria-label="State symbol"
+            title="State symbol"
+          >
+            <Image
+              src="/wb.png"
+              alt="West Bengal"
+              width={44}
+              height={44}
+              style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+            />
+          </div>
           <input
             type="text"
             value={templateMeta.stateName}

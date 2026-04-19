@@ -42,16 +42,16 @@ export const partyCatalog = {
 };
 
 export const defaultParties = [
-  { name: 'All India Trinamool Congress', seats: 142 },
-  { name: 'Bharatiya Janata Party', seats: 110 },
-  { name: 'Communist Party of India (Marxist)', seats: 54 },
-  { name: 'Indian National Congress', seats: 36 },
-  { name: 'All India Forward Bloc', seats: 12 },
+  { name: 'All India Trinamool Congress', seats: 96 },
+  { name: 'Bharatiya Janata Party', seats: 75 },
+  { name: 'Communist Party of India (Marxist)', seats: 37 },
+  { name: 'Indian National Congress', seats: 24 },
+  { name: 'All India Forward Bloc', seats: 8 },
 ];
 
 export const defaultTemplateMeta = {
   stateName: 'West Bengal',
-  totalSeats: 354,
+  totalSeats: 254,
 };
 
 export function enrichParty(party) {
