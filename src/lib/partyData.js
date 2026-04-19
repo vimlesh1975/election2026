@@ -1,5 +1,6 @@
 export const partyCatalog = {
   'all india trinamool congress': {
+    shortName: 'AITC',
     bengaliName: 'সর্বভারতীয় তৃণমূল কংগ্রেস',
     symbol: 'Flowers & Grass',
     bengaliSymbol: 'ফুল ও ঘাস',
@@ -7,6 +8,7 @@ export const partyCatalog = {
     color: '#22c55e',
   },
   'bharatiya janata party': {
+    shortName: 'BJP',
     bengaliName: 'ভারতীয় জনতা পার্টি',
     symbol: 'Lotus',
     bengaliSymbol: 'পদ্ম',
@@ -14,6 +16,7 @@ export const partyCatalog = {
     color: '#f97316',
   },
   'communist party of india (marxist)': {
+    shortName: 'CPI(M)',
     bengaliName: 'ভারতের কমিউনিস্ট পার্টি (মার্কসবাদী)',
     symbol: 'Hammer, Sickle & Star',
     bengaliSymbol: 'হাতুড়ি, কাস্তে ও তারা',
@@ -21,6 +24,7 @@ export const partyCatalog = {
     color: '#ef4444',
   },
   'indian national congress': {
+    shortName: 'INC',
     bengaliName: 'ভারতীয় জাতীয় কংগ্রেস',
     symbol: 'Hand',
     bengaliSymbol: 'হাত',
@@ -28,6 +32,7 @@ export const partyCatalog = {
     color: '#3b82f6',
   },
   'all india forward bloc': {
+    shortName: 'AIFB',
     bengaliName: 'অল ইন্ডিয়া ফরওয়ার্ড ব্লক',
     symbol: 'Lion',
     bengaliSymbol: 'সিংহ',
@@ -55,6 +60,7 @@ export function enrichParty(party) {
   return {
     ...entry,
     ...party,
+    shortName: party.shortName ?? entry.shortName,
     bengaliName: party.bengaliName ?? entry.bengaliName,
     symbol: party.symbol ?? entry.symbol,
     bengaliSymbol: party.bengaliSymbol ?? entry.bengaliSymbol,

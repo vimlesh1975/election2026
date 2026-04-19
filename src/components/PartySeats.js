@@ -155,7 +155,7 @@ export default function PartySeats({ parties = [], isPlaying = false }) {
                     </span>
                   </div>
                 ) : null}
-                <div className="party-name">{party.name}</div>
+                <div className="party-name">{party.shortName || party.name}</div>
                 {party.bengaliName ? <div className="party-name-bn">{party.bengaliName}</div> : null}
                 <div className="party-score" style={{ textShadow: `0 0 32px ${party.color}40` }}>
                   <AnimatedScore value={activeSeats} />

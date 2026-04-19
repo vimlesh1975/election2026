@@ -1,29 +1,35 @@
 'use client';
 
 import Image from 'next/image';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { defaultParties, enrichParty } from '../lib/partyData';
 
 export default function Dashboard() {
   const [parties, setParties] = useState(() => defaultParties.map(enrichParty));
-  const [status, setStatus] = useState('Ready to connect.');
+
+  useEffect(() => {
+    const previousBodyBackground = document.body.style.backgroundColor;
+    const previousHtmlBackground = document.documentElement.style.backgroundColor;
+
+    document.body.style.backgroundColor = '#0f172a';
+    document.documentElement.style.backgroundColor = '#0f172a';
+
+    return () => {
+      document.body.style.backgroundColor = previousBodyBackground;
+      document.documentElement.style.backgroundColor = previousHtmlBackground;
+    };
+  }, []);
 
   const sendCommand = async (command) => {
-    setStatus('Sending command...');
     try {
       const res = await fetch('/api/caspar', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ command, data: { parties } }),
       });
-      const result = await res.json();
-      if (result.success) {
-        setStatus(`Success: Sent -> ${result.cmdSent}`);
-      } else {
-        setStatus(`Error: ${result.error}`);
-      }
+      await res.json();
     } catch (e) {
-      setStatus(`Network Error: ${e.message}`);
+      console.error('Failed to send CasparCG command:', e);
     }
   };
 
@@ -114,9 +120,9 @@ export default function Dashboard() {
             </div>
             <input
               type="text"
-              value={party.name}
-              onChange={(e) => updateParty(i, 'name', e.target.value)}
-              placeholder="Party name"
+              value={party.shortName || party.name}
+              onChange={(e) => updateParty(i, 'shortName', e.target.value)}
+              placeholder="Short name"
               style={{
                 padding: '12px',
                 background: 'rgba(0,0,0,0.5)',
@@ -197,10 +203,6 @@ export default function Dashboard() {
         >
           Hard Clear Layer
         </button>
-      </div>
-
-      <div style={{ display: 'flex', padding: '16px', background: 'rgba(0,0,0,0.5)', borderRadius: '8px', width: '100%', maxWidth: '980px', fontSize: '14px', fontFamily: 'monospace', color: '#cbd5e1' }}>
-        Console: {status}
       </div>
 
       <div style={{ marginTop: 'auto', paddingTop: '40px', fontSize: '14px', color: '#64748b' }}>
