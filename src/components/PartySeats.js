@@ -105,17 +105,28 @@ const SymbolIcon = ({ symbol }) => {
   }
 };
 
-export default function PartySeats({ parties = [], isPlaying = false }) {
+export default function PartySeats({
+  parties = [],
+  isPlaying = false,
+  stateName = 'West Bengal',
+  totalSeats,
+}) {
   // Calculate max score to normalize the bar width
   const maxScore = Math.max(...parties.map(p => p.seats), 1);
-  const totalSeats = parties.reduce((sum, p) => sum + p.seats, 0);
+  const declaredSeats = parties.reduce((sum, p) => sum + p.seats, 0);
+  const activeTotalSeats = typeof totalSeats === 'number' ? totalSeats : declaredSeats;
 
   return (
     <div className={`graphic-wrapper ${isPlaying ? 'is-playing' : ''}`}>
       <div className="header-container">
-        <h1 className="election-title">Election Results 2026</h1>
-        <div className="total-seats-badge">
-          Total Seats Declared: <AnimatedScore value={isPlaying ? totalSeats : 0} />
+        <div className="summary-card">
+          <div className="summary-card-value">{stateName}</div>
+          <div className="summary-card-divider"></div>
+          <div className="summary-card-stats">
+            <AnimatedScore value={isPlaying ? declaredSeats : 0} />
+            <span className="summary-card-separator">/</span>
+            <span>{activeTotalSeats}</span>
+          </div>
         </div>
       </div>
       
@@ -139,13 +150,13 @@ export default function PartySeats({ parties = [], isPlaying = false }) {
                     <div className="party-symbol party-symbol--featured">
                       <span className="party-symbol-icon" aria-hidden="true">
                         {party.symbolImage ? (
-                          <Image
-                            src={party.symbolImage}
-                            alt={party.symbol}
-                            width={30}
-                            height={30}
-                            className="party-symbol-image"
-                          />
+                        <Image
+                          src={party.symbolImage}
+                          alt={party.symbol}
+                          width={56}
+                          height={56}
+                          className="party-symbol-image"
+                        />
                         ) : (
                           <SymbolIcon symbol={party.symbol} />
                         )}

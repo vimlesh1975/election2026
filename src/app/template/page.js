@@ -3,7 +3,7 @@
 import { useEffect } from 'react';
 import { useCasparCG } from '../../hooks/useCasparCG';
 import PartySeats from '../../components/PartySeats';
-import { defaultParties, enrichParty } from '../../lib/partyData';
+import { defaultParties, defaultTemplateMeta, enrichParty } from '../../lib/partyData';
 
 export default function Home() {
   const { isPlaying, data } = useCasparCG();
@@ -21,7 +21,12 @@ export default function Home() {
     };
   }, []);
 
-  const sourceData = data?.parties ? data : { parties: defaultParties };
+  const sourceData = data?.parties
+    ? data
+    : {
+        ...defaultTemplateMeta,
+        parties: defaultParties,
+      };
   const activeData = {
     ...sourceData,
     parties: sourceData.parties.map(enrichParty),
@@ -29,7 +34,12 @@ export default function Home() {
 
   return (
     <main className="container">
-      <PartySeats parties={activeData.parties} isPlaying={isPlaying} />
+      <PartySeats
+        parties={activeData.parties}
+        isPlaying={isPlaying}
+        stateName={activeData.stateName}
+        totalSeats={activeData.totalSeats}
+      />
     </main>
   );
 }

@@ -47,11 +47,93 @@ body {
   transform: translateY(0);
 }
 
+.graphic-wrapper.is-playing .total-seats-badge {
+  animation: badgePulse 4.8s ease-in-out infinite;
+}
+
+.graphic-wrapper.is-playing .party-card {
+  animation:
+    cardDrift 6s ease-in-out infinite;
+}
+
+.graphic-wrapper.is-playing .party-card:nth-child(2) {
+  animation-delay: 0.6s;
+}
+
+.graphic-wrapper.is-playing .party-card:nth-child(3) {
+  animation-delay: 1.2s;
+}
+
+.graphic-wrapper.is-playing .party-card:nth-child(4) {
+  animation-delay: 1.8s;
+}
+
+.graphic-wrapper.is-playing .party-card:nth-child(5) {
+  animation-delay: 2.4s;
+}
+
+.graphic-wrapper.is-playing .party-card-bg-glow {
+  animation: glowPulse 5.2s ease-in-out infinite;
+}
+
+.graphic-wrapper.is-playing .party-card::after {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: 24px;
+  border: 4px solid color-mix(in srgb, var(--party-color, #fff) 88%, white 12%);
+  background:
+    linear-gradient(90deg, transparent, color-mix(in srgb, var(--party-color, #fff) 100%, white 0%), transparent) top center / 380px 6px no-repeat,
+    linear-gradient(180deg, transparent, color-mix(in srgb, var(--party-color, #fff) 100%, white 0%), transparent) right center / 6px 380px no-repeat,
+    linear-gradient(270deg, transparent, color-mix(in srgb, var(--party-color, #fff) 100%, white 0%), transparent) bottom center / 380px 6px no-repeat,
+    linear-gradient(0deg, transparent, color-mix(in srgb, var(--party-color, #fff) 100%, white 0%), transparent) left center / 6px 380px no-repeat;
+  box-shadow:
+    0 0 20px color-mix(in srgb, var(--party-color, #fff) 90%, white 10%),
+    0 0 48px color-mix(in srgb, var(--party-color, #fff) 88%, transparent),
+    0 0 96px color-mix(in srgb, var(--party-color, #fff) 72%, transparent),
+    0 0 150px color-mix(in srgb, var(--party-color, #fff) 48%, transparent),
+    inset 0 0 20px color-mix(in srgb, var(--party-color, #fff) 42%, transparent);
+  background-repeat: no-repeat;
+  animation: neonEdge 1.8s linear infinite;
+  pointer-events: none;
+  z-index: 2;
+  opacity: 1;
+}
+
+.graphic-wrapper.is-playing .party-symbol--featured {
+  animation: symbolBob 3.8s ease-in-out infinite;
+}
+
+.graphic-wrapper.is-playing .party-symbol::after {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,0.24);
+  box-shadow: 0 0 0 rgba(255,255,255,0);
+  animation: symbolHalo 4.6s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.graphic-wrapper.is-playing .party-card::before {
+  animation: accentShine 4.4s linear infinite;
+}
+
+.graphic-wrapper.is-playing .party-bar::after {
+  content: '';
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 72px;
+  background: linear-gradient(90deg, rgba(255,255,255,0), rgba(255,255,255,0.45), rgba(255,255,255,0));
+  animation: barSweep 3.6s linear infinite;
+}
+
 .header-container {
   margin-bottom: 32px;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 24px;
 }
 
 .election-title {
@@ -64,6 +146,58 @@ body {
   background: linear-gradient(135deg, #fff, #94a3b8);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+}
+
+.summary-card {
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 16px 24px;
+  border-radius: 8px;
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.2);
+  box-shadow: 0 10px 32px rgba(0,0,0,0.22);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.summary-card-label {
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  color: #cbd5e1;
+}
+
+.summary-card-value {
+  font-size: 30px;
+  font-weight: 800;
+  color: #ffffff;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.summary-card-divider {
+  width: 1px;
+  height: 44px;
+  background: rgba(255,255,255,0.16);
+}
+
+.summary-card-stats {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  font-size: 32px;
+  font-weight: 900;
+  line-height: 1;
+  color: #ffffff;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.summary-card-separator {
+  color: #94a3b8;
 }
 
 .total-seats-badge {
@@ -98,6 +232,8 @@ body {
   box-shadow: 0 24px 48px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.1);
   position: relative;
   transition: transform 0.4s ease;
+  will-change: transform;
+  isolation: isolate;
 }
 
 .party-card::before {
@@ -127,17 +263,17 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 14px;
+  gap: 20px;
   min-width: 0;
 }
 
 .party-name {
-  font-size: 28px;
-  font-weight: 700;
+  font-size: 22px;
+  font-weight: 600;
   color: #f8fafc;
   text-align: left;
   text-transform: uppercase;
-  letter-spacing: 1px;
+  letter-spacing: 0;
   line-height: 1.15;
   min-width: 0;
 }
@@ -152,10 +288,10 @@ body {
 }
 
 .party-symbol {
-  padding: 8px 14px 8px 10px;
+  padding: 10px;
   border: 1px solid rgba(255,255,255,0.18);
   border-radius: 8px;
-  background: rgba(255,255,255,0.08);
+  background: rgba(255,255,255,0.12);
   color: #e2e8f0;
   font-size: 16px;
   font-weight: 600;
@@ -166,35 +302,39 @@ body {
   align-items: center;
   gap: 10px;
   max-width: 100%;
+  position: relative;
 }
 
 .party-symbol--featured {
-  min-width: 64px;
-  max-width: 64px;
+  min-width: 112px;
+  max-width: 112px;
   justify-content: center;
+  box-shadow: 0 16px 34px rgba(0,0,0,0.28);
 }
 
 .party-symbol-icon {
-  width: 44px;
-  height: 44px;
+  width: 88px;
+  height: 88px;
   border-radius: 8px;
-  background: rgba(255,255,255,0.1);
+  background: rgba(255,255,255,0.2);
   display: inline-flex;
   align-items: center;
   justify-content: center;
   color: var(--party-color, #fff);
   flex: 0 0 auto;
+  position: relative;
+  overflow: hidden;
 }
 
 .party-symbol-icon svg {
-  width: 28px;
-  height: 28px;
+  width: 68px;
+  height: 68px;
   display: block;
 }
 
 .party-symbol-image {
-  width: 30px;
-  height: 30px;
+  width: 68px;
+  height: 68px;
   object-fit: contain;
   display: block;
 }
@@ -248,6 +388,7 @@ body {
   transform: translate(-50%, -50%);
   z-index: 1;
   pointer-events: none;
+  will-change: transform, opacity;
 }
 
 .party-bar-container {
@@ -267,4 +408,106 @@ body {
   transition: width 1.5s cubic-bezier(0.16, 1, 0.3, 1);
   box-shadow: 0 0 16px var(--party-color, #fff);
   border-radius: 0 6px 6px 0;
+  position: relative;
+  overflow: hidden;
+}
+
+@keyframes cardDrift {
+  0%, 100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes glowPulse {
+  0%, 100% {
+    opacity: 0.05;
+    transform: translate(-50%, -50%) scale(1);
+  }
+
+  50% {
+    opacity: 0.11;
+    transform: translate(-50%, -50%) scale(1.08);
+  }
+}
+
+@keyframes symbolBob {
+  0%, 100% {
+    transform: translateY(0) scale(1);
+  }
+
+  50% {
+    transform: translateY(-6px) scale(1.03);
+  }
+}
+
+@keyframes barSweep {
+  0% {
+    transform: translateX(-100%);
+  }
+
+  100% {
+    transform: translateX(180px);
+  }
+}
+
+@keyframes badgePulse {
+  0%, 100% {
+    box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+  }
+
+  50% {
+    box-shadow: 0 10px 36px rgba(255,255,255,0.14);
+  }
+}
+
+@keyframes symbolHalo {
+  0%, 100% {
+    opacity: 0.25;
+    box-shadow: 0 0 0 rgba(255,255,255,0);
+  }
+
+  50% {
+    opacity: 0.9;
+    box-shadow: 0 0 24px rgba(255,255,255,0.28);
+  }
+}
+
+@keyframes accentShine {
+  0%, 100% {
+    box-shadow: 0 0 16px var(--party-color, #fff);
+    filter: brightness(1);
+  }
+
+  50% {
+    box-shadow: 0 0 28px var(--party-color, #fff), 0 0 44px rgba(255,255,255,0.2);
+    filter: brightness(1.18);
+  }
+}
+
+@keyframes neonEdge {
+  0%, 100% {
+    opacity: 0.95;
+    box-shadow:
+      0 0 20px color-mix(in srgb, var(--party-color, #fff) 90%, white 10%),
+      0 0 48px color-mix(in srgb, var(--party-color, #fff) 88%, transparent),
+      0 0 96px color-mix(in srgb, var(--party-color, #fff) 72%, transparent),
+      0 0 150px color-mix(in srgb, var(--party-color, #fff) 48%, transparent),
+      inset 0 0 20px color-mix(in srgb, var(--party-color, #fff) 42%, transparent);
+    filter: brightness(1.18);
+  }
+
+  50% {
+    opacity: 1;
+    box-shadow:
+      0 0 28px color-mix(in srgb, var(--party-color, #fff) 100%, white 0%),
+      0 0 72px color-mix(in srgb, var(--party-color, #fff) 96%, transparent),
+      0 0 140px color-mix(in srgb, var(--party-color, #fff) 84%, transparent),
+      0 0 220px color-mix(in srgb, var(--party-color, #fff) 56%, transparent),
+      inset 0 0 30px color-mix(in srgb, var(--party-color, #fff) 56%, transparent);
+    filter: brightness(1.55);
+  }
 }

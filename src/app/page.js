@@ -2,10 +2,11 @@
 
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
-import { defaultParties, enrichParty } from '../lib/partyData';
+import { defaultParties, defaultTemplateMeta, enrichParty } from '../lib/partyData';
 
 export default function Dashboard() {
   const [parties, setParties] = useState(() => defaultParties.map(enrichParty));
+  const [templateMeta, setTemplateMeta] = useState(defaultTemplateMeta);
 
   useEffect(() => {
     const previousBodyBackground = document.body.style.backgroundColor;
@@ -25,7 +26,7 @@ export default function Dashboard() {
       const res = await fetch('/api/caspar', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ command, data: { parties } }),
+        body: JSON.stringify({ command, data: { ...templateMeta, parties } }),
       });
       await res.json();
     } catch (e) {
@@ -45,6 +46,13 @@ export default function Dashboard() {
     setParties(nextParties);
   };
 
+  const updateTemplateMeta = (field, value) => {
+    setTemplateMeta((current) => ({
+      ...current,
+      [field]: field === 'totalSeats' ? (parseInt(value, 10) || 0) : value,
+    }));
+  };
+
   return (
     <div
       style={{
@@ -61,6 +69,58 @@ export default function Dashboard() {
       }}
     >
       <h1>CasparCG Election Control Panel</h1>
+
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '16px',
+          background: 'rgba(255,255,255,0.05)',
+          padding: '32px',
+          borderRadius: '8px',
+          width: '100%',
+          maxWidth: '980px',
+        }}
+      >
+        <h2>Template Info</h2>
+        <div
+          style={{
+            display: 'grid',
+            gap: '12px',
+            gridTemplateColumns: '220px 120px',
+            justifyContent: 'start',
+          }}
+        >
+          <input
+            type="text"
+            value={templateMeta.stateName}
+            onChange={(e) => updateTemplateMeta('stateName', e.target.value)}
+            placeholder="State name"
+            style={{
+              width: '220px',
+              padding: '12px',
+              background: 'rgba(0,0,0,0.5)',
+              border: '1px solid rgba(255,255,255,0.2)',
+              color: 'white',
+              borderRadius: '8px',
+            }}
+          />
+          <input
+            type="number"
+            value={templateMeta.totalSeats}
+            onChange={(e) => updateTemplateMeta('totalSeats', e.target.value)}
+            placeholder="Total seats"
+            style={{
+              width: '120px',
+              padding: '12px',
+              background: 'rgba(0,0,0,0.5)',
+              border: '1px solid rgba(255,255,255,0.2)',
+              color: 'white',
+              borderRadius: '8px',
+            }}
+          />
+        </div>
+      </div>
 
       <div
         style={{

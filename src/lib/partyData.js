@@ -4,7 +4,7 @@ export const partyCatalog = {
     bengaliName: 'সর্বভারতীয় তৃণমূল কংগ্রেস',
     symbol: 'Flowers & Grass',
     bengaliSymbol: 'ফুল ও ঘাস',
-    symbolImage: '/aitc-symbol.svg',
+    symbolImage: '/aitc-symbol.png',
     color: '#22c55e',
   },
   'bharatiya janata party': {
@@ -20,7 +20,7 @@ export const partyCatalog = {
     bengaliName: 'ভারতের কমিউনিস্ট পার্টি (মার্কসবাদী)',
     symbol: 'Hammer, Sickle & Star',
     bengaliSymbol: 'হাতুড়ি, কাস্তে ও তারা',
-    symbolImage: '/cpim-symbol.svg',
+    symbolImage: '/cpim-symbol.png',
     color: '#ef4444',
   },
   'indian national congress': {
@@ -36,7 +36,7 @@ export const partyCatalog = {
     bengaliName: 'অল ইন্ডিয়া ফরওয়ার্ড ব্লক',
     symbol: 'Lion',
     bengaliSymbol: 'সিংহ',
-    symbolImage: '/aifb-symbol.svg',
+    symbolImage: '/aifb-symbol.png',
     color: '#a855f7',
   },
 };
@@ -48,6 +48,11 @@ export const defaultParties = [
   { name: 'Indian National Congress', seats: 36 },
   { name: 'All India Forward Bloc', seats: 12 },
 ];
+
+export const defaultTemplateMeta = {
+  stateName: 'West Bengal',
+  totalSeats: 354,
+};
 
 export function enrichParty(party) {
   const key = party.name?.trim().toLowerCase();
