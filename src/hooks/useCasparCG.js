@@ -36,6 +36,8 @@ export function useCasparCG() {
 
     const queuedCalls = Array.isArray(window.__casparCGQueue) ? [...window.__casparCGQueue] : [];
     window.__casparCGQueue = [];
+    const hasQueuedPlay = queuedCalls.some((call) => call?.name === 'play');
+    const hasQueuedStop = queuedCalls.some((call) => call?.name === 'stop');
 
     for (const call of queuedCalls) {
       switch (call.name) {
@@ -53,6 +55,20 @@ export function useCasparCG() {
           break;
         default:
           break;
+      }
+    }
+
+    // Browser preview fallback: if no play/stop was sent during startup, auto-play the template.
+    // Disable with `?autoplay=0`.
+    if (!hasQueuedPlay && !hasQueuedStop) {
+      try {
+        const url = new URL(window.location.href);
+        const autoplayDisabled = url.searchParams.get('autoplay') === '0';
+        if (!autoplayDisabled) {
+          setIsPlaying(true);
+        }
+      } catch {
+        setIsPlaying(true);
       }
     }
 

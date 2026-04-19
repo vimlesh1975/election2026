@@ -4,6 +4,7 @@ import { NextResponse } from 'next/server';
 export async function POST(request) {
   try {
     const { command, data } = await request.json();
+    const origin = new URL(request.url).origin;
     
     // CasparCG standard configuration
     const channel = 1;
@@ -22,7 +23,7 @@ export async function POST(request) {
         if (command === 'play') {
           // Play triggers the graphic to load with the payload data
           // We assume local caspar server running on the same machine
-          const url = 'http://127.0.0.1:3000/template';
+          const url = `${origin}/template`;
           amcpCmd = `CG ${channel}-${layer} ADD 1 "${url}" 1 "${payload}"\r\n`;
         } else if (command === 'update') {
           amcpCmd = `CG ${channel}-${layer} UPDATE 1 "${payload}"\r\n`;
