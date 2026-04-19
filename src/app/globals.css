@@ -117,7 +117,7 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 16px;
+  gap: 14px;
   position: relative;
   z-index: 2;
 }
@@ -125,10 +125,95 @@ body {
 .party-name {
   font-size: 28px;
   font-weight: 700;
-  color: #cbd5e1;
+  color: #f8fafc;
   text-align: center;
   text-transform: uppercase;
   letter-spacing: 1px;
+  line-height: 1.15;
+}
+
+.party-name-bn {
+  font-size: 18px;
+  font-weight: 600;
+  color: #f8fafc;
+  text-align: center;
+  line-height: 1.3;
+  max-width: 100%;
+}
+
+.party-symbol {
+  padding: 8px 14px 8px 10px;
+  border: 1px solid rgba(255,255,255,0.18);
+  border-radius: 8px;
+  background: rgba(255,255,255,0.08);
+  color: #e2e8f0;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1;
+  text-align: center;
+  text-transform: uppercase;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  max-width: 100%;
+}
+
+.party-symbol--featured {
+  min-width: 0;
+  max-width: 100%;
+}
+
+.party-symbol-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 8px;
+  background: rgba(255,255,255,0.1);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--party-color, #fff);
+  flex: 0 0 auto;
+}
+
+.party-symbol-icon svg {
+  width: 28px;
+  height: 28px;
+  display: block;
+}
+
+.party-symbol-image {
+  width: 30px;
+  height: 30px;
+  object-fit: contain;
+  display: block;
+}
+
+.party-symbol-label {
+  display: block;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.party-symbol-copy {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  min-width: 0;
+}
+
+.party-symbol-label-bn {
+  font-size: 13px;
+  font-weight: 500;
+  color: #cbd5e1;
+  text-transform: none;
+  line-height: 1.1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
 }
 
 .party-score {
@@ -171,45 +256,4 @@ body {
   transition: width 1.5s cubic-bezier(0.16, 1, 0.3, 1);
   box-shadow: 0 0 16px var(--party-color, #fff);
   border-radius: 0 6px 6px 0;
-}
-
-/* Developer Controls Overlay */
-.dev-controls {
-  position: absolute;
-  top: 20px;
-  left: 20px;
-  display: flex;
-  gap: 12px;
-  opacity: 0.1;
-  transition: opacity 0.3s ease;
-  z-index: 9999;
-}
-
-.dev-controls:hover {
-  opacity: 1;
-}
-
-.dev-btn {
-  padding: 12px 24px;
-  border: none;
-  border-radius: 8px;
-  font-size: 16px;
-  font-weight: 600;
-  cursor: pointer;
-  color: white;
-  transition: transform 0.2s, box-shadow 0.2s;
-}
-
-.dev-btn:active {
-  transform: scale(0.95);
-}
-
-.play-btn {
-  background: #22c55e;
-  box-shadow: 0 4px 12px rgba(34, 197, 94, 0.4);
-}
-
-.stop-btn {
-  background: #ef4444;
-  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
 }
