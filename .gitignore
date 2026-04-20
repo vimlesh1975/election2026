@@ -48,4 +48,4 @@ installer/dist/*
 installer/dist/*.log
 installer/payload/app/
 installer/payload/runtime/node/
-installer/payload/runtime/winsw/*.exe
+# installer/payload/runtime/winsw/*.exe
