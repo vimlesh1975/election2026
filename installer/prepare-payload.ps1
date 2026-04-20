@@ -28,7 +28,16 @@ function Copy-Tree {
   Copy-Item -Path $childGlob -Destination $To -Recurse -Force
 }
 
+function Ensure-PathExists {
+  param([string]$Path)
+  if (-not (Test-Path $Path)) {
+    New-Item -ItemType Directory -Path $Path -Force | Out-Null
+  }
+}
+
 $appOut = Join-Path $PayloadRoot "app"
+Ensure-PathExists (Join-Path $payloadRoot "app\package.json")
+Ensure-PathExists (Join-Path $payloadRoot "app\public")
 $runtimeNode = Join-Path $PayloadRoot "runtime\\node"
 $runtimeWinsw = Join-Path $PayloadRoot "runtime\\winsw"
 
@@ -37,11 +46,17 @@ New-Item -ItemType Directory -Path $runtimeNode -Force | Out-Null
 New-Item -ItemType Directory -Path $runtimeWinsw -Force | Out-Null
 
 Write-Host "Preparing app payload..." -ForegroundColor Cyan
+# Ensure dependencies are installed and production build is generated
+Write-Host "Running npm install and npm run build..." -ForegroundColor Cyan
+Push-Location $RepoRoot
+npm install
+npm run build
+Pop-Location
 
 $pathsToCopy = @(
   "package.json",
   "package-lock.json",
-  "next.config.js",
+  "next.config.mjs",
   "src",
   "public",
   ".next",
