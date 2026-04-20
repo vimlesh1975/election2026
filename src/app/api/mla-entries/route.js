@@ -4,7 +4,45 @@ import * as XLSX from 'xlsx';
 import { NextResponse } from 'next/server';
 
 const DEFAULT_MLA_DIR = '/mlas/west-bengal';
+const DATA_EXCEL_FILE = 'mla.updated.xlsx';
+const DEFAULT_EXCEL_FILE = 'mla.xlsx';
 export const dynamic = 'force-dynamic';
+
+function uniquePaths(paths) {
+  return [...new Set(paths.filter(Boolean))];
+}
+
+function getCommonDataExcelPath() {
+  const commonDataDir = process.env.ELECTION_GRAPHIC_DATA_DIR
+    || (process.env.PROGRAMDATA && path.join(process.env.PROGRAMDATA, 'ElectionGraphic'));
+
+  if (!commonDataDir) {
+    return '';
+  }
+
+  return path.join(commonDataDir, DATA_EXCEL_FILE);
+}
+
+async function findExcelPath() {
+  const publicDir = path.join(process.cwd(), 'public');
+  const candidates = uniquePaths([
+    process.env.MLA_EXCEL_PATH,
+    getCommonDataExcelPath(),
+    path.join(publicDir, DATA_EXCEL_FILE),
+    path.join(publicDir, DEFAULT_EXCEL_FILE),
+  ]);
+
+  for (const candidate of candidates) {
+    try {
+      await fs.access(/* turbopackIgnore: true */ candidate);
+      return candidate;
+    } catch {
+      // Try the next candidate.
+    }
+  }
+
+  throw new Error(`No MLA Excel file found. Checked: ${candidates.join(', ')}`);
+}
 
 function normalizePhotoPath(fileName) {
   if (!fileName || typeof fileName !== 'string') {
@@ -85,18 +123,8 @@ function rowsFromMatrix(matrixRows) {
 
 export async function GET() {
   try {
-    const updatedExcelPath = path.join(process.cwd(), 'public', 'mla.updated.xlsx');
-    const defaultExcelPath = path.join(process.cwd(), 'public', 'mla.xlsx');
-    let excelPath = defaultExcelPath;
-
-    try {
-      await fs.access(updatedExcelPath);
-      excelPath = updatedExcelPath;
-    } catch {
-      excelPath = defaultExcelPath;
-    }
-
-    const fileBuffer = await fs.readFile(excelPath);
+    const excelPath = await findExcelPath();
+    const fileBuffer = await fs.readFile(/* turbopackIgnore: true */ excelPath);
     const workbook = XLSX.read(fileBuffer, { type: 'buffer' });
     const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
 
@@ -136,7 +164,7 @@ export async function GET() {
     return NextResponse.json({ entries });
   } catch (error) {
     return NextResponse.json(
-      { entries: [], error: `Failed to read mla.xlsx: ${String(error)}` },
+      { entries: [], error: `Failed to read MLA workbook: ${String(error)}` },
       { status: 500 },
     );
   }

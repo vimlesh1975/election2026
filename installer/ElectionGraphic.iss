@@ -4,6 +4,7 @@
 #define AppVersion "1.0.0"
 #define ServiceExe "ElectionGraphicService.exe"
 #define ServiceId "ElectionGraphicService"
+#define DataDirName "ElectionGraphic"
 
 ; Optional override from ISCC:
 ;   ISCC.exe /DBuildName=election2026_YYYYMMDD_HHMMSS ElectionGraphic.iss
@@ -35,6 +36,8 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 [Files]
 ; App payload (offline)
 Source: "payload\app\*"; DestDir: "{app}\app"; Flags: recursesubdirs ignoreversion
+; Editable workbook data. Keep this outside Program Files so non-admin users can update it.
+Source: "payload\data\mla.updated.xlsx"; DestDir: "{commonappdata}\{#DataDirName}"; DestName: "mla.updated.xlsx"; Flags: ignoreversion onlyifdoesntexist
 ; Private Node runtime
 Source: "payload\runtime\node\node.exe"; DestDir: "{app}\runtime\node"; Flags: ignoreversion
 Source: "payload\runtime\node\*"; DestDir: "{app}\runtime\node"; Flags: recursesubdirs ignoreversion; Excludes: "node.exe"
@@ -45,11 +48,13 @@ Source: "payload\runtime\winsw\{#ServiceId}.xml"; DestDir: "{app}\runtime\winsw"
 Source: "runtime\service.js"; DestDir: "{app}\runtime\service"; Flags: ignoreversion
 
 [Dirs]
+Name: "{commonappdata}\{#DataDirName}"; Permissions: users-modify
 Name: "{app}\runtime\winsw\logs"
 Name: "{app}\runtime\service"
 
 [Icons]
 Name: "{group}\{#AppName}"; Filename: "http://localhost:16000"; IconFilename: "{app}\app\public\favicon.ico"; Flags: createonlyiffileexists
+Name: "{group}\Edit MLA Excel"; Filename: "{commonappdata}\{#DataDirName}\mla.updated.xlsx"; Flags: createonlyiffileexists
 
 [Run]
 ; Install and start the service
@@ -61,9 +66,44 @@ Filename: "{app}\runtime\winsw\{#ServiceExe}"; Parameters: "stop"; WorkingDir: "
 Filename: "{app}\runtime\winsw\{#ServiceExe}"; Parameters: "uninstall"; WorkingDir: "{app}\runtime\winsw"; Flags: runhidden
 
 [Code]
+var
+  DataWorkbookExistedBeforeInstall: Boolean;
+
 function FileExistsInInstall(const RelativePath: string): Boolean;
 begin
   Result := FileExists(ExpandConstant('{app}\' + RelativePath));
+end;
+
+function InitializeSetup(): Boolean;
+begin
+  DataWorkbookExistedBeforeInstall := FileExists(ExpandConstant('{commonappdata}\{#DataDirName}\mla.updated.xlsx'));
+  Result := True;
+end;
+
+procedure MigrateAndRemoveOldWorkbook;
+var
+  DataDir: string;
+  DataPath: string;
+  OldPath: string;
+begin
+  DataDir := ExpandConstant('{commonappdata}\{#DataDirName}');
+  DataPath := DataDir + '\mla.updated.xlsx';
+
+  if not DataWorkbookExistedBeforeInstall then
+  begin
+    OldPath := ExpandConstant('{app}\app\public\mla.updated.xlsx');
+    if not FileExists(OldPath) then
+      OldPath := ExpandConstant('{app}\app\public\mla.xlsx');
+
+    if FileExists(OldPath) then
+    begin
+      ForceDirectories(DataDir);
+      FileCopy(OldPath, DataPath, False);
+    end;
+  end;
+
+  DeleteFile(ExpandConstant('{app}\app\public\mla.updated.xlsx'));
+  DeleteFile(ExpandConstant('{app}\app\public\mla.xlsx'));
 end;
 
 procedure ReplaceInFile(const FileName, FindText, ReplaceText: string);
@@ -95,6 +135,8 @@ begin
       MsgBox('WinSW service wrapper missing in installation folder. This installer package is incomplete.', mbCriticalError, MB_OK);
       RaiseException('WinSW missing.');
     end;
+
+    MigrateAndRemoveOldWorkbook;
 
     // Make the app/browser title match the installer build name.
     ReplaceInFile(ExpandConstant('{app}\runtime\winsw\{#ServiceId}.xml'), '__APP_TITLE__', '{#BuildName}');

@@ -36,12 +36,15 @@ function Ensure-PathExists {
 }
 
 $appOut = Join-Path $PayloadRoot "app"
+$dataOut = Join-Path $PayloadRoot "data"
 Ensure-PathExists (Join-Path $payloadRoot "app\package.json")
 Ensure-PathExists (Join-Path $payloadRoot "app\public")
+Ensure-PathExists $dataOut
 $runtimeNode = Join-Path $PayloadRoot "runtime\\node"
 $runtimeWinsw = Join-Path $PayloadRoot "runtime\\winsw"
 
 New-Item -ItemType Directory -Path $appOut -Force | Out-Null
+New-Item -ItemType Directory -Path $dataOut -Force | Out-Null
 New-Item -ItemType Directory -Path $runtimeNode -Force | Out-Null
 New-Item -ItemType Directory -Path $runtimeWinsw -Force | Out-Null
 
@@ -72,6 +75,21 @@ foreach ($rel in $pathsToCopy) {
   $to = Join-Path $appOut $rel
   Write-Host "Copying $rel" -ForegroundColor Gray
   Copy-Tree -From $from -To $to
+}
+
+$excelSourceCandidates = @(
+  (Join-Path $RepoRoot "public\mla.updated.xlsx"),
+  (Join-Path $RepoRoot "public\mla.xlsx")
+)
+$excelSource = $excelSourceCandidates | Where-Object { Test-Path -LiteralPath $_ -PathType Leaf } | Select-Object -First 1
+if ($excelSource) {
+  Write-Host "Copying editable MLA workbook to data payload" -ForegroundColor Gray
+  Copy-Tree -From $excelSource -To (Join-Path $dataOut "mla.updated.xlsx")
+
+  Get-ChildItem -LiteralPath (Join-Path $appOut "public") -Filter "mla*.xls*" -File -ErrorAction SilentlyContinue |
+    Remove-Item -Force -ErrorAction SilentlyContinue
+} else {
+  Write-Host "WARNING: No MLA workbook found at public\mla.updated.xlsx or public\mla.xlsx." -ForegroundColor Yellow
 }
 
 if (-not (Test-Path (Join-Path $appOut ".next"))) {

@@ -43,6 +43,7 @@ Write-Host "Preparing payload..." -ForegroundColor Cyan
 $payloadRoot = Join-Path $PSScriptRoot "payload"
 Ensure-PathExists (Join-Path $payloadRoot "app\package.json")
 Ensure-PathExists (Join-Path $payloadRoot "app\node_modules\next\dist\bin\next")
+Ensure-PathExists (Join-Path $payloadRoot "data\mla.updated.xlsx") "The editable MLA workbook must exist in installer\payload\data."
 Ensure-PathExists (Join-Path $payloadRoot "runtime\node\node.exe") "Node 23.11.1 runtime must exist in installer\payload\runtime\node."
 Ensure-PathExists (Join-Path $payloadRoot "runtime\winsw\ElectionGraphicService.exe") "WinSW must exist in installer\payload\runtime\winsw."
 Ensure-PathExists (Join-Path $payloadRoot "runtime\winsw\ElectionGraphicService.xml")

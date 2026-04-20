@@ -11,12 +11,24 @@ const installRoot = path.resolve(__dirname, '..', '..');
 const appDir = path.join(installRoot, 'app');
 const nextBin = path.join(appDir, 'node_modules', 'next', 'dist', 'bin', 'next');
 const buildIdPath = path.join(appDir, '.next', 'BUILD_ID');
+const dataDir = process.env.ELECTION_GRAPHIC_DATA_DIR
+  || path.join(process.env.PROGRAMDATA || path.join(installRoot, 'data'), 'ElectionGraphic');
+const dataExcelPath = process.env.MLA_EXCEL_PATH || path.join(dataDir, 'mla.updated.xlsx');
+
+function serviceEnv() {
+  return {
+    ...process.env,
+    NODE_ENV: 'production',
+    ELECTION_GRAPHIC_DATA_DIR: dataDir,
+    MLA_EXCEL_PATH: dataExcelPath,
+  };
+}
 
 function runNode(args, { stdio = 'inherit' } = {}) {
   return new Promise((resolve, reject) => {
     const child = spawn(process.execPath, args, {
       cwd: appDir,
-      env: { ...process.env, NODE_ENV: 'production' },
+      env: serviceEnv(),
       windowsHide: true,
       stdio,
     });
@@ -37,7 +49,7 @@ async function ensureBuild() {
 async function startServer() {
   const child = spawn(process.execPath, [nextBin, 'start', '-p', port], {
     cwd: appDir,
-    env: { ...process.env, NODE_ENV: 'production' },
+    env: serviceEnv(),
     windowsHide: true,
     stdio: 'inherit',
   });
@@ -64,7 +76,6 @@ async function startServer() {
     await startServer();
   } catch (err) {
     // Let WinSW capture this in stderr log.
-    // eslint-disable-next-line no-console
     console.error(err && err.stack ? err.stack : String(err));
     process.exitCode = 1;
   }
