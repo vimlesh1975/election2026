@@ -38,6 +38,8 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 Source: "payload\app\*"; DestDir: "{app}\app"; Flags: recursesubdirs ignoreversion
 ; Editable workbook data. Keep this outside Program Files so non-admin users can update it.
 Source: "payload\data\mla.updated.xlsx"; DestDir: "{commonappdata}\{#DataDirName}"; DestName: "mla.updated.xlsx"; Flags: ignoreversion onlyifdoesntexist
+; Editable MLA images. Users can add more images here and reference them from Excel.
+Source: "payload\data\mlas\*"; DestDir: "{commonappdata}\{#DataDirName}\mlas"; Flags: recursesubdirs ignoreversion onlyifdoesntexist
 ; Private Node runtime
 Source: "payload\runtime\node\node.exe"; DestDir: "{app}\runtime\node"; Flags: ignoreversion
 Source: "payload\runtime\node\*"; DestDir: "{app}\runtime\node"; Flags: recursesubdirs ignoreversion; Excludes: "node.exe"
@@ -55,6 +57,7 @@ Name: "{app}\runtime\service"
 [Icons]
 Name: "{group}\{#AppName}"; Filename: "http://localhost:16000"; IconFilename: "{app}\app\public\favicon.ico"; Flags: createonlyiffileexists
 Name: "{group}\Edit MLA Excel"; Filename: "{commonappdata}\{#DataDirName}\mla.updated.xlsx"; Flags: createonlyiffileexists
+Name: "{group}\Open MLA Images Folder"; Filename: "{win}\explorer.exe"; Parameters: """{commonappdata}\{#DataDirName}\mlas\west-bengal"""; Flags: createonlyiffileexists
 
 [Run]
 ; Install and start the service

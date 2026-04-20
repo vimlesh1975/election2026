@@ -92,6 +92,14 @@ if ($excelSource) {
   Write-Host "WARNING: No MLA workbook found at public\mla.updated.xlsx or public\mla.xlsx." -ForegroundColor Yellow
 }
 
+$mlaImagesSource = Join-Path $RepoRoot "public\mlas"
+if (Test-Path -LiteralPath $mlaImagesSource -PathType Container) {
+  Write-Host "Copying editable MLA image folder to data payload" -ForegroundColor Gray
+  Copy-Tree -From $mlaImagesSource -To (Join-Path $dataOut "mlas")
+} else {
+  Write-Host "WARNING: No MLA images folder found at public\mlas." -ForegroundColor Yellow
+}
+
 if (-not (Test-Path (Join-Path $appOut ".next"))) {
   Write-Host "WARNING: .next build output not found in payload. Run `npm run build` before packaging." -ForegroundColor Yellow
 }

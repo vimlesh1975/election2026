@@ -107,6 +107,7 @@ export default function WinnerPhotoCard({
               fill
               sizes="480px"
               loading="eager"
+              unoptimized
               className="winner-photo-image"
             />
           </div>

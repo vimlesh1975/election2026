@@ -4,6 +4,7 @@ import * as XLSX from 'xlsx';
 import { NextResponse } from 'next/server';
 
 const DEFAULT_MLA_DIR = '/mlas/west-bengal';
+const IMAGE_ROUTE_PREFIX = '/api/mla-images';
 const DATA_EXCEL_FILE = 'mla.updated.xlsx';
 const DEFAULT_EXCEL_FILE = 'mla.xlsx';
 export const dynamic = 'force-dynamic';
@@ -55,15 +56,22 @@ function normalizePhotoPath(fileName) {
     return '';
   }
 
-  if (trimmed.startsWith('/')) {
+  if (/^https?:\/\//i.test(trimmed) || trimmed.startsWith(IMAGE_ROUTE_PREFIX)) {
     return trimmed;
   }
 
-  if (trimmed.includes('/')) {
-    return `/${trimmed}`;
-  }
+  const relativePath = trimmed.startsWith('/')
+    ? trimmed.replace(/^\/+/, '')
+    : trimmed.includes('/')
+      ? trimmed
+      : `${DEFAULT_MLA_DIR.replace(/^\/+/, '')}/${trimmed}`;
 
-  return `${DEFAULT_MLA_DIR}/${trimmed}`;
+  const encodedPath = relativePath
+    .split('/')
+    .map((segment) => encodeURIComponent(segment))
+    .join('/');
+
+  return `${IMAGE_ROUTE_PREFIX}/${encodedPath}`;
 }
 
 function getCell(row, keys) {

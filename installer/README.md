@@ -47,6 +47,7 @@ Or open `installer/ElectionGraphic.iss` in Inno Setup and compile.
 The installer will:
 - Install into `{pf}\ElectionGraphic`
 - Copy the editable MLA workbook to `%ProgramData%\ElectionGraphic\mla.updated.xlsx`
+- Copy editable MLA photos to `%ProgramData%\ElectionGraphic\mlas\west-bengal`
 - Create and start Windows Service `ElectionGraphicService`
 - Start the app on `http://localhost:16000`
 
@@ -54,7 +55,13 @@ The workbook in `%ProgramData%\ElectionGraphic\mla.updated.xlsx` is intentionall
 program folder and is granted normal user modify permissions. Existing workbook edits are
 preserved on upgrade.
 
+To add more candidate photos after installation, copy them into
+`%ProgramData%\ElectionGraphic\mlas\west-bengal`. In the Excel file, put only the file name
+in the first column, for example `new-candidate.jpg`. You can also use a relative path such
+as `mlas/west-bengal/new-candidate.jpg`.
+
 ## Uninstall
 
 Uninstalling will stop and uninstall the Windows Service and remove installed program files.
-The editable workbook under `%ProgramData%\ElectionGraphic` is left in place as user data.
+The editable workbook and image folder under `%ProgramData%\ElectionGraphic` are left in
+place as user data.
