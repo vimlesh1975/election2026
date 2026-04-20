@@ -13,12 +13,13 @@ const TRANSITION_MS = 760;
 
 function buildSlide(entries, fallbackPhotoPath, fallbackResultText, index) {
   const activeEntry = entries[index] || entries[0];
+  const entryHeadline = activeEntry?.headline || activeEntry?.text || '';
 
   return {
     index,
     photoPath: activeEntry?.photoPath || fallbackPhotoPath,
     displayName: activeEntry?.name || getPhotoDisplayName(activeEntry?.photoPath) || 'Unknown Candidate',
-    headline: fallbackResultText || getRandomHeadline(),
+    headline: entryHeadline || fallbackResultText || getRandomHeadline(),
   };
 }
 
@@ -45,9 +46,10 @@ export default function WinnerPhotoCard({
     }
 
     setCurrentIndex(0);
+    const initialSlide = buildSlide(activeEntries, photoPath, resultText, 0);
     setCurrentSlide({
-      ...buildSlide(activeEntries, photoPath, resultText, 0),
-      headline: getRandomHeadline(),
+      ...initialSlide,
+      headline: initialSlide.headline || getRandomHeadline(),
     });
     setIsAnimatingIn(true);
 
@@ -75,9 +77,10 @@ export default function WinnerPhotoCard({
   }, [activeEntries, isPlaying, rotationMs]);
 
   useEffect(() => {
+    const baseSlide = buildSlide(activeEntries, photoPath, resultText, currentIndex);
     const nextSlide = {
-      ...buildSlide(activeEntries, photoPath, resultText, currentIndex),
-      headline: getRandomHeadline(),
+      ...baseSlide,
+      headline: baseSlide.headline || getRandomHeadline(),
     };
 
     setCurrentSlide(nextSlide);

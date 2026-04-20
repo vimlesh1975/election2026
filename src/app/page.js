@@ -4,11 +4,12 @@ import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { defaultParties, defaultTemplateMeta, enrichParty } from '../lib/partyData';
 import { defaultWinnerPhotoMeta, getPhotoDisplayName } from '../lib/winnerPhotoData';
-import { wbMlaShowcase, winnerHeadlineOptions } from '../lib/wbMlaShowcase';
+import { wbMlaShowcase } from '../lib/wbMlaShowcase';
 
 export default function Dashboard() {
   const [parties, setParties] = useState(() => defaultParties.map(enrichParty));
   const [templateMeta, setTemplateMeta] = useState(defaultTemplateMeta);
+  const [mlaEntries, setMlaEntries] = useState(wbMlaShowcase);
 
   useEffect(() => {
     const previousBodyBackground = document.body.style.backgroundColor;
@@ -20,6 +21,34 @@ export default function Dashboard() {
     return () => {
       document.body.style.backgroundColor = previousBodyBackground;
       document.documentElement.style.backgroundColor = previousHtmlBackground;
+    };
+  }, []);
+
+  useEffect(() => {
+    let isMounted = true;
+
+    const loadMlaEntries = async () => {
+      try {
+        const response = await fetch('/api/mla-entries', { cache: 'no-store' });
+        if (!response.ok) {
+          return;
+        }
+
+        const payload = await response.json();
+        if (!isMounted || !Array.isArray(payload.entries) || payload.entries.length === 0) {
+          return;
+        }
+
+        setMlaEntries(payload.entries);
+      } catch (error) {
+        console.error('Failed to load mla.xlsx entries:', error);
+      }
+    };
+
+    loadMlaEntries();
+
+    return () => {
+      isMounted = false;
     };
   }, []);
 
@@ -56,10 +85,29 @@ export default function Dashboard() {
   };
 
   const partyTemplateData = { ...templateMeta, parties };
-  const winnerPhotoName = getPhotoDisplayName(defaultWinnerPhotoMeta.photoPath);
+  const firstMlaEntry = mlaEntries[0];
+  const winnerPhotoPath = firstMlaEntry?.photoPath || defaultWinnerPhotoMeta.photoPath;
+  const winnerPhotoName = firstMlaEntry?.name || getPhotoDisplayName(winnerPhotoPath);
+  const winnerHeadlinePreview = firstMlaEntry?.headline || defaultWinnerPhotoMeta.resultText;
+  const excelEntryPreview = mlaEntries
+    .map((entry) => {
+      const name = entry?.name?.trim();
+      const headline = entry?.headline?.trim();
+      if (!name && !headline) {
+        return '';
+      }
+      if (!name) {
+        return headline;
+      }
+      if (!headline) {
+        return name;
+      }
+      return `${name} - ${headline}`;
+    })
+    .filter((line) => line.length > 0);
   const winnerTemplateData = {
     ...defaultWinnerPhotoMeta,
-    entries: wbMlaShowcase,
+    entries: mlaEntries,
   };
 
   return (
@@ -346,7 +394,7 @@ export default function Dashboard() {
                 }}
               >
                 <Image
-                  src={defaultWinnerPhotoMeta.photoPath}
+                  src={winnerPhotoPath}
                   alt={winnerPhotoName || 'Winner preview'}
                   width={140}
                   height={140}
@@ -364,16 +412,65 @@ export default function Dashboard() {
                   Slideshow folder: <strong>/public/mlas/west-bengal</strong>
                 </div>
                 <div style={{ fontSize: '14px', color: '#cbd5e1' }}>
-                  First photo: <strong>{winnerPhotoName || 'No file selected'}</strong>
-                </div>
-                <div style={{ fontSize: '14px', color: '#cbd5e1' }}>
                   Photos rotate every <strong>5 seconds</strong> when you press play.
                 </div>
                 <div style={{ fontSize: '14px', color: '#cbd5e1' }}>
-                  Loaded MLAs: <strong>{wbMlaShowcase.map((entry) => entry.name).join(', ')}</strong>
-                </div>
-                <div style={{ fontSize: '14px', color: '#cbd5e1' }}>
-                  Random text pool: <strong>{winnerHeadlineOptions.join(' | ')}</strong>
+                  <strong>Loaded texts:</strong>
+                  {mlaEntries.length ? (
+                    <div style={{ marginTop: '8px', overflowX: 'auto' }}>
+                      <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '13px' }}>
+                        <thead>
+                          <tr>
+                            <th
+                              style={{
+                                textAlign: 'left',
+                                padding: '8px',
+                                borderBottom: '1px solid rgba(255,255,255,0.2)',
+                                color: '#e2e8f0',
+                              }}
+                            >
+                              Name
+                            </th>
+                            <th
+                              style={{
+                                textAlign: 'left',
+                                padding: '8px',
+                                borderBottom: '1px solid rgba(255,255,255,0.2)',
+                                color: '#e2e8f0',
+                              }}
+                            >
+                              Text
+                            </th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {mlaEntries.map((entry, index) => (
+                            <tr key={`${entry?.name || 'entry'}-${index}`}>
+                              <td
+                                style={{
+                                  padding: '8px',
+                                  borderBottom: '1px solid rgba(255,255,255,0.08)',
+                                  color: '#f8fafc',
+                                }}
+                              >
+                                {entry?.name || '-'}
+                              </td>
+                              <td
+                                style={{
+                                  padding: '8px',
+                                  borderBottom: '1px solid rgba(255,255,255,0.08)',
+                                }}
+                              >
+                                {entry?.headline || '-'}
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  ) : (
+                    <div style={{ marginTop: '6px' }}>No text in sheet</div>
+                  )}
                 </div>
               </div>
             </div>
