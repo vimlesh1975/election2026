@@ -398,6 +398,7 @@ export default function Dashboard() {
                   alt={winnerPhotoName || 'Winner preview'}
                   width={140}
                   height={140}
+                  loading="eager"
                   style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '12px' }}
                 />
               </div>

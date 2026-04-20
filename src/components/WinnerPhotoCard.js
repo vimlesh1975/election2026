@@ -106,6 +106,7 @@ export default function WinnerPhotoCard({
               alt={currentSlide.displayName}
               fill
               sizes="480px"
+              loading="eager"
               className="winner-photo-image"
             />
           </div>
