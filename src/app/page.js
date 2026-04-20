@@ -67,8 +67,8 @@ export default function Dashboard() {
       style={{
         padding: '40px',
         background: '#0f172a',
-        minHeight: '100vh',
-        width: '100vw',
+        width: '1920px',
+        height: '1080px',
         display: 'flex',
         flexDirection: 'column',
         gap: '32px',
@@ -82,301 +82,343 @@ export default function Dashboard() {
       <div
         style={{
           display: 'flex',
-          flexDirection: 'column',
-          gap: '16px',
-          background: 'rgba(255,255,255,0.05)',
-          padding: '32px',
-          borderRadius: '8px',
+          gap: '24px',
           width: '100%',
-          maxWidth: '980px',
+          flex: 1,
+          minHeight: 0,
         }}
       >
-        <h2>Template Info</h2>
         <div
           style={{
-            display: 'grid',
-            gap: '12px',
-            gridTemplateColumns: '56px 220px 120px',
-            justifyContent: 'start',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '16px',
+            flex: 1,
+            minWidth: 0,
+            minHeight: 0,
+            overflowY: 'auto',
           }}
         >
           <div
             style={{
-              width: '56px',
-              height: '56px',
-              borderRadius: '8px',
-              background: 'rgba(255,255,255,0.08)',
-              border: '1px solid rgba(255,255,255,0.16)',
               display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              padding: '6px',
-            }}
-            aria-label="State symbol"
-            title="State symbol"
-          >
-            <Image
-              src="/wb.png"
-              alt="West Bengal"
-              width={44}
-              height={44}
-              style={{ width: '100%', height: '100%', objectFit: 'contain' }}
-            />
-          </div>
-          <input
-            type="text"
-            value={templateMeta.stateName}
-            onChange={(e) => updateTemplateMeta('stateName', e.target.value)}
-            placeholder="State name"
-            style={{
-              width: '220px',
-              padding: '12px',
-              background: 'rgba(0,0,0,0.5)',
-              border: '1px solid rgba(255,255,255,0.2)',
-              color: 'white',
+              flexDirection: 'column',
+              gap: '16px',
+              background: 'rgba(255,255,255,0.05)',
+              padding: '32px',
               borderRadius: '8px',
             }}
-          />
-          <input
-            type="number"
-            value={templateMeta.totalSeats}
-            onChange={(e) => updateTemplateMeta('totalSeats', e.target.value)}
-            placeholder="Total seats"
-            style={{
-              width: '120px',
-              padding: '12px',
-              background: 'rgba(0,0,0,0.5)',
-              border: '1px solid rgba(255,255,255,0.2)',
-              color: 'white',
-              borderRadius: '8px',
-            }}
-          />
-        </div>
-      </div>
-
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          gap: '16px',
-          background: 'rgba(255,255,255,0.05)',
-          padding: '32px',
-          borderRadius: '8px',
-          width: '100%',
-          maxWidth: '980px',
-        }}
-      >
-        <h2>Party Data</h2>
-        {parties.map((party, i) => (
-          <div
-            key={i}
-            style={{
-              display: 'grid',
-              gap: '12px',
-              alignItems: 'center',
-              gridTemplateColumns: '56px 70px 100px',
-              justifyContent: 'start',
-              width: '100%',
-            }}
           >
+            <h2>Template Info</h2>
             <div
               style={{
-                width: '56px',
-                height: '56px',
-                borderRadius: '8px',
-                background: 'rgba(255,255,255,0.08)',
-                border: '1px solid rgba(255,255,255,0.16)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                padding: '6px',
+                display: 'grid',
+                gap: '12px',
+                gridTemplateColumns: '56px 220px 120px',
+                justifyContent: 'start',
               }}
             >
-              {party.symbolImage ? (
+              <div
+                style={{
+                  width: '56px',
+                  height: '56px',
+                  borderRadius: '8px',
+                  background: 'rgba(255,255,255,0.08)',
+                  border: '1px solid rgba(255,255,255,0.16)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  padding: '6px',
+                }}
+                aria-label="State symbol"
+                title="State symbol"
+              >
                 <Image
-                  src={party.symbolImage}
-                  alt={party.symbol || party.name}
+                  src="/wb.png"
+                  alt="West Bengal"
                   width={44}
                   height={44}
                   style={{ width: '100%', height: '100%', objectFit: 'contain' }}
                 />
-              ) : (
-                <div
-                  style={{
-                    width: '24px',
-                    height: '24px',
-                    borderRadius: '50%',
-                    background: party.color,
-                    border: '2px solid rgba(255,255,255,0.5)',
-                  }}
-                />
-              )}
+              </div>
+              <input
+                type="text"
+                value={templateMeta.stateName}
+                onChange={(e) => updateTemplateMeta('stateName', e.target.value)}
+                placeholder="State name"
+                style={{
+                  width: '220px',
+                  padding: '12px',
+                  background: 'rgba(0,0,0,0.5)',
+                  border: '1px solid rgba(255,255,255,0.2)',
+                  color: 'white',
+                  borderRadius: '8px',
+                }}
+              />
+              <input
+                type="number"
+                value={templateMeta.totalSeats}
+                onChange={(e) => updateTemplateMeta('totalSeats', e.target.value)}
+                placeholder="Total seats"
+                style={{
+                  width: '120px',
+                  padding: '12px',
+                  background: 'rgba(0,0,0,0.5)',
+                  border: '1px solid rgba(255,255,255,0.2)',
+                  color: 'white',
+                  borderRadius: '8px',
+                }}
+              />
             </div>
-            <input
-              type="text"
-              value={party.shortName || party.name}
-              onChange={(e) => updateParty(i, 'shortName', e.target.value)}
-              placeholder="Short name"
-              style={{
-                width: '70px',
-                padding: '12px',
-                background: 'rgba(0,0,0,0.5)',
-                border: '1px solid rgba(255,255,255,0.2)',
-                color: 'white',
-                borderRadius: '8px',
-              }}
-            />
-            <input
-              type="number"
-              value={party.seats}
-              onChange={(e) => updateParty(i, 'seats', e.target.value)}
-              placeholder="Seats"
-              style={{
-                width: '100px',
-                padding: '12px',
-                background: 'rgba(0,0,0,0.5)',
-                border: '1px solid rgba(255,255,255,0.2)',
-                color: 'white',
-                borderRadius: '8px',
-              }}
-            />
-          </div>
-        ))}
-      </div>
-
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          gap: '16px',
-          background: 'rgba(255,255,255,0.05)',
-          padding: '32px',
-          borderRadius: '8px',
-          width: '100%',
-          maxWidth: '980px',
-        }}
-      >
-        <h2>Winner Photo Template</h2>
-        <div
-          style={{
-            display: 'grid',
-            gap: '12px',
-            gridTemplateColumns: '160px minmax(280px, 1fr)',
-            alignItems: 'center',
-          }}
-        >
-          <div
-            style={{
-              width: '160px',
-              height: '160px',
-              borderRadius: '16px',
-              background: 'rgba(255,255,255,0.08)',
-              border: '1px solid rgba(255,255,255,0.16)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              padding: '10px',
-              overflow: 'hidden',
-            }}
-          >
-            <Image
-              src={defaultWinnerPhotoMeta.photoPath}
-              alt={winnerPhotoName || 'Winner preview'}
-              width={140}
-              height={140}
-              style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '12px' }}
-            />
           </div>
           <div
             style={{
               display: 'flex',
               flexDirection: 'column',
-              gap: '12px',
+              gap: '16px',
+              background: 'rgba(255,255,255,0.05)',
+              padding: '32px',
+              borderRadius: '8px',
             }}
           >
-            <div style={{ fontSize: '15px', color: '#cbd5e1', lineHeight: 1.5 }}>
-              Slideshow folder: <strong>/public/mlas/west-bengal</strong>
-            </div>
-            <div style={{ fontSize: '14px', color: '#cbd5e1' }}>
-              First photo: <strong>{winnerPhotoName || 'No file selected'}</strong>
-            </div>
-            <div style={{ fontSize: '14px', color: '#cbd5e1' }}>
-              Photos rotate every <strong>5 seconds</strong> when you press play.
-            </div>
-            <div style={{ fontSize: '14px', color: '#cbd5e1' }}>
-              Loaded MLAs: <strong>{wbMlaShowcase.map((entry) => entry.name).join(', ')}</strong>
-            </div>
-            <div style={{ fontSize: '14px', color: '#cbd5e1' }}>
-              Random text pool: <strong>{winnerHeadlineOptions.join(' | ')}</strong>
+            <h2>Party Data</h2>
+            {parties.map((party, i) => (
+              <div
+                key={i}
+                style={{
+                  display: 'grid',
+                  gap: '12px',
+                  alignItems: 'center',
+                  gridTemplateColumns: '56px 70px 100px',
+                  justifyContent: 'start',
+                  width: '100%',
+                }}
+              >
+                <div
+                  style={{
+                    width: '56px',
+                    height: '56px',
+                    borderRadius: '8px',
+                    background: 'rgba(255,255,255,0.08)',
+                    border: '1px solid rgba(255,255,255,0.16)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    padding: '6px',
+                  }}
+                >
+                  {party.symbolImage ? (
+                    <Image
+                      src={party.symbolImage}
+                      alt={party.symbol || party.name}
+                      width={44}
+                      height={44}
+                      style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+                    />
+                  ) : (
+                    <div
+                      style={{
+                        width: '24px',
+                        height: '24px',
+                        borderRadius: '50%',
+                        background: party.color,
+                        border: '2px solid rgba(255,255,255,0.5)',
+                      }}
+                    />
+                  )}
+                </div>
+                <input
+                  type="text"
+                  value={party.shortName || party.name}
+                  onChange={(e) => updateParty(i, 'shortName', e.target.value)}
+                  placeholder="Short name"
+                  style={{
+                    width: '70px',
+                    padding: '12px',
+                    background: 'rgba(0,0,0,0.5)',
+                    border: '1px solid rgba(255,255,255,0.2)',
+                    color: 'white',
+                    borderRadius: '8px',
+                  }}
+                />
+                <input
+                  type="number"
+                  value={party.seats}
+                  onChange={(e) => updateParty(i, 'seats', e.target.value)}
+                  placeholder="Seats"
+                  style={{
+                    width: '100px',
+                    padding: '12px',
+                    background: 'rgba(0,0,0,0.5)',
+                    border: '1px solid rgba(255,255,255,0.2)',
+                    color: 'white',
+                    borderRadius: '8px',
+                  }}
+                />
+              </div>
+            ))}
+          </div>
+
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '12px',
+              background: 'rgba(255,255,255,0.05)',
+              padding: '24px',
+              borderRadius: '8px',
+            }}
+          >
+            <h2 style={{ margin: 0 }}>Party Seats Controls</h2>
+            <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap', justifyContent: 'center' }}>
+              <button
+                onClick={() => sendCommand('play', 'partySeats', partyTemplateData)}
+                style={{ background: '#22c55e', color: 'white', padding: '16px 32px', border: 'none', borderRadius: '8px', fontSize: '18px', fontWeight: 'bold', cursor: 'pointer', boxShadow: '0 4px 12px rgba(34,197,94,0.4)' }}
+              >
+                Show Party Graphic
+              </button>
+
+              <button
+                onClick={() => sendCommand('update', 'partySeats', partyTemplateData)}
+                style={{ background: '#3b82f6', color: 'white', padding: '16px 32px', border: 'none', borderRadius: '8px', fontSize: '18px', fontWeight: 'bold', cursor: 'pointer', boxShadow: '0 4px 12px rgba(59,130,246,0.4)' }}
+              >
+                Update Party Data
+              </button>
+
+              <button
+                onClick={() => sendCommand('stop', 'partySeats')}
+                style={{ background: '#ef4444', color: 'white', padding: '16px 32px', border: 'none', borderRadius: '8px', fontSize: '18px', fontWeight: 'bold', cursor: 'pointer', boxShadow: '0 4px 12px rgba(239,68,68,0.4)' }}
+              >
+                Stop Party Graphic
+              </button>
+
+              <button
+                onClick={() => sendCommand('clear', 'partySeats')}
+                style={{ background: '#64748b', color: 'white', padding: '16px 32px', border: 'none', borderRadius: '8px', fontSize: '18px', fontWeight: 'bold', cursor: 'pointer' }}
+              >
+                Clear Party Layer
+              </button>
             </div>
           </div>
         </div>
-      </div>
-
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '24px', width: '100%', maxWidth: '980px' }}>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-          <h2 style={{ margin: 0 }}>Party Seats Controls</h2>
-          <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap', justifyContent: 'center' }}>
-            <button
-              onClick={() => sendCommand('play', 'partySeats', partyTemplateData)}
-              style={{ background: '#22c55e', color: 'white', padding: '16px 32px', border: 'none', borderRadius: '8px', fontSize: '18px', fontWeight: 'bold', cursor: 'pointer', boxShadow: '0 4px 12px rgba(34,197,94,0.4)' }}
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '16px',
+            flex: 1,
+            minWidth: 0,
+            minHeight: 0,
+            overflowY: 'auto',
+          }}
+        >
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '16px',
+              background: 'rgba(255,255,255,0.05)',
+              padding: '32px',
+              borderRadius: '8px',
+            }}
+          >
+            <h2>Winner Photo Template</h2>
+            <div
+              style={{
+                display: 'grid',
+                gap: '12px',
+                gridTemplateColumns: '160px minmax(280px, 1fr)',
+                alignItems: 'center',
+              }}
             >
-              Show Party Graphic
-            </button>
-
-            <button
-              onClick={() => sendCommand('update', 'partySeats', partyTemplateData)}
-              style={{ background: '#3b82f6', color: 'white', padding: '16px 32px', border: 'none', borderRadius: '8px', fontSize: '18px', fontWeight: 'bold', cursor: 'pointer', boxShadow: '0 4px 12px rgba(59,130,246,0.4)' }}
-            >
-              Update Party Data
-            </button>
-
-            <button
-              onClick={() => sendCommand('stop', 'partySeats')}
-              style={{ background: '#ef4444', color: 'white', padding: '16px 32px', border: 'none', borderRadius: '8px', fontSize: '18px', fontWeight: 'bold', cursor: 'pointer', boxShadow: '0 4px 12px rgba(239,68,68,0.4)' }}
-            >
-              Stop Party Graphic
-            </button>
-
-            <button
-              onClick={() => sendCommand('clear', 'partySeats')}
-              style={{ background: '#64748b', color: 'white', padding: '16px 32px', border: 'none', borderRadius: '8px', fontSize: '18px', fontWeight: 'bold', cursor: 'pointer' }}
-            >
-              Clear Party Layer
-            </button>
+              <div
+                style={{
+                  width: '160px',
+                  height: '160px',
+                  borderRadius: '16px',
+                  background: 'rgba(255,255,255,0.08)',
+                  border: '1px solid rgba(255,255,255,0.16)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  padding: '10px',
+                  overflow: 'hidden',
+                }}
+              >
+                <Image
+                  src={defaultWinnerPhotoMeta.photoPath}
+                  alt={winnerPhotoName || 'Winner preview'}
+                  width={140}
+                  height={140}
+                  style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '12px' }}
+                />
+              </div>
+              <div
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '12px',
+                }}
+              >
+                <div style={{ fontSize: '15px', color: '#cbd5e1', lineHeight: 1.5 }}>
+                  Slideshow folder: <strong>/public/mlas/west-bengal</strong>
+                </div>
+                <div style={{ fontSize: '14px', color: '#cbd5e1' }}>
+                  First photo: <strong>{winnerPhotoName || 'No file selected'}</strong>
+                </div>
+                <div style={{ fontSize: '14px', color: '#cbd5e1' }}>
+                  Photos rotate every <strong>5 seconds</strong> when you press play.
+                </div>
+                <div style={{ fontSize: '14px', color: '#cbd5e1' }}>
+                  Loaded MLAs: <strong>{wbMlaShowcase.map((entry) => entry.name).join(', ')}</strong>
+                </div>
+                <div style={{ fontSize: '14px', color: '#cbd5e1' }}>
+                  Random text pool: <strong>{winnerHeadlineOptions.join(' | ')}</strong>
+                </div>
+              </div>
+            </div>
           </div>
-        </div>
 
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-          <h2 style={{ margin: 0 }}>Winner Photo Controls</h2>
-          <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap', justifyContent: 'center' }}>
-            <button
-              onClick={() => sendCommand('play', 'winnerPhoto', winnerTemplateData)}
-              style={{ background: '#22c55e', color: 'white', padding: '16px 32px', border: 'none', borderRadius: '8px', fontSize: '18px', fontWeight: 'bold', cursor: 'pointer', boxShadow: '0 4px 12px rgba(34,197,94,0.4)' }}
-            >
-              Play MLA Slideshow
-            </button>
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '12px',
+              background: 'rgba(255,255,255,0.05)',
+              padding: '24px',
+              borderRadius: '8px',
+            }}
+          >
+            <h2 style={{ margin: 0 }}>Winner Photo Controls</h2>
+            <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap', justifyContent: 'center' }}>
+              <button
+                onClick={() => sendCommand('play', 'winnerPhoto', winnerTemplateData)}
+                style={{ background: '#22c55e', color: 'white', padding: '16px 32px', border: 'none', borderRadius: '8px', fontSize: '18px', fontWeight: 'bold', cursor: 'pointer', boxShadow: '0 4px 12px rgba(34,197,94,0.4)' }}
+              >
+                Play MLA Slideshow
+              </button>
 
-            <button
-              onClick={() => sendCommand('update', 'winnerPhoto', winnerTemplateData)}
-              style={{ background: '#3b82f6', color: 'white', padding: '16px 32px', border: 'none', borderRadius: '8px', fontSize: '18px', fontWeight: 'bold', cursor: 'pointer', boxShadow: '0 4px 12px rgba(59,130,246,0.4)' }}
-            >
-              Update MLA Slideshow
-            </button>
+              <button
+                onClick={() => sendCommand('update', 'winnerPhoto', winnerTemplateData)}
+                style={{ background: '#3b82f6', color: 'white', padding: '16px 32px', border: 'none', borderRadius: '8px', fontSize: '18px', fontWeight: 'bold', cursor: 'pointer', boxShadow: '0 4px 12px rgba(59,130,246,0.4)' }}
+              >
+                Update MLA Slideshow
+              </button>
 
-            <button
-              onClick={() => sendCommand('stop', 'winnerPhoto')}
-              style={{ background: '#ef4444', color: 'white', padding: '16px 32px', border: 'none', borderRadius: '8px', fontSize: '18px', fontWeight: 'bold', cursor: 'pointer', boxShadow: '0 4px 12px rgba(239,68,68,0.4)' }}
-            >
-              Stop Winner Photo
-            </button>
+              <button
+                onClick={() => sendCommand('stop', 'winnerPhoto')}
+                style={{ background: '#ef4444', color: 'white', padding: '16px 32px', border: 'none', borderRadius: '8px', fontSize: '18px', fontWeight: 'bold', cursor: 'pointer', boxShadow: '0 4px 12px rgba(239,68,68,0.4)' }}
+              >
+                Stop Winner Photo
+              </button>
 
-            <button
-              onClick={() => sendCommand('clear', 'winnerPhoto')}
-              style={{ background: '#64748b', color: 'white', padding: '16px 32px', border: 'none', borderRadius: '8px', fontSize: '18px', fontWeight: 'bold', cursor: 'pointer' }}
-            >
-              Clear Winner Layer
-            </button>
+              <button
+                onClick={() => sendCommand('clear', 'winnerPhoto')}
+                style={{ background: '#64748b', color: 'white', padding: '16px 32px', border: 'none', borderRadius: '8px', fontSize: '18px', fontWeight: 'bold', cursor: 'pointer' }}
+              >
+                Clear Winner Layer
+              </button>
+            </div>
           </div>
         </div>
       </div>
