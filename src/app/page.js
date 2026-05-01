@@ -7,6 +7,7 @@ import { defaultWinnerPhotoMeta } from '../lib/winnerPhotoData';
 import { wbMlaShowcase } from '../lib/wbMlaShowcase';
 
 const PARTY_MIXER_FILL_STORAGE_KEY = 'election-party-mixer-fill';
+const PARTY_DATA_STORAGE_KEY = 'election-party-data';
 const WINNER_MIXER_FILL_STORAGE_KEY = 'election-winner-mixer-fill';
 const defaultWinnerMixerFill = {
   x: Number.isFinite(defaultWinnerPhotoMeta?.x) ? defaultWinnerPhotoMeta.x : 0,
@@ -33,15 +34,22 @@ function normalizeStoredFillValue(value, fallback) {
   return Number.isFinite(parsed) ? parsed : fallback;
 }
 
+function normalizeStoredSeatValue(value, fallback) {
+  const parsed = Number.parseInt(value, 10);
+  return Number.isFinite(parsed) ? parsed : fallback;
+}
+
 export default function Dashboard() {
   const [parties, setParties] = useState(() => defaultParties.map(enrichParty));
   const [templateMeta, setTemplateMeta] = useState(defaultTemplateMeta);
   const [winnerMixerFill, setWinnerMixerFill] = useState(defaultWinnerMixerFill);
   const [mlaEntries, setMlaEntries] = useState(wbMlaShowcase);
   const [photoRefreshToken, setPhotoRefreshToken] = useState(() => Date.now());
+  const [symbolRefreshToken, setSymbolRefreshToken] = useState(() => Date.now());
   const [isRefreshingMla, setIsRefreshingMla] = useState(false);
   const [mlaRefreshMessage, setMlaRefreshMessage] = useState('Excel data not refreshed yet');
   const hasMountedMixerFillRef = useRef(false);
+  const hasLoadedPartyDataRef = useRef(false);
   const hasLoadedMixerFillRef = useRef(false);
   const hasMountedWinnerMixerFillRef = useRef(false);
   const hasLoadedWinnerMixerFillRef = useRef(false);
@@ -79,6 +87,46 @@ export default function Dashboard() {
       console.error('Failed to restore mixer fill values:', error);
     } finally {
       hasLoadedMixerFillRef.current = true;
+    }
+  }, []);
+
+  useEffect(() => {
+    try {
+      const storedValue = window.localStorage.getItem(PARTY_DATA_STORAGE_KEY);
+      if (!storedValue) {
+        hasLoadedPartyDataRef.current = true;
+        return;
+      }
+
+      const parsed = JSON.parse(storedValue);
+      if (!Array.isArray(parsed) || parsed.length === 0) {
+        hasLoadedPartyDataRef.current = true;
+        return;
+      }
+
+      setParties(
+        defaultParties.map((defaultParty, index) => {
+          const enrichedDefaultParty = enrichParty(defaultParty);
+          const storedParty = parsed[index] || {};
+          const storedName = typeof storedParty.name === 'string' && storedParty.name.trim()
+            ? storedParty.name
+            : enrichedDefaultParty.name;
+          const storedShortName = typeof storedParty.shortName === 'string'
+            ? storedParty.shortName
+            : undefined;
+
+          return {
+            ...enrichedDefaultParty,
+            name: storedName,
+            shortName: storedShortName,
+            seats: normalizeStoredSeatValue(storedParty.seats, enrichedDefaultParty.seats),
+          };
+        }),
+      );
+    } catch (error) {
+      console.error('Failed to restore party data:', error);
+    } finally {
+      hasLoadedPartyDataRef.current = true;
     }
   }, []);
 
@@ -271,7 +319,14 @@ export default function Dashboard() {
     }));
   };
 
-  const partyTemplateData = { ...templateMeta, parties };
+  const refreshedParties = useMemo(
+    () => parties.map((party) => ({
+      ...party,
+      symbolImage: addPhotoRefreshToken(party.symbolImage, symbolRefreshToken),
+    })),
+    [parties, symbolRefreshToken],
+  );
+  const partyTemplateData = { ...templateMeta, parties: refreshedParties };
   const refreshedMlaEntries = useMemo(
     () => mlaEntries.map((entry) => ({
       ...entry,
@@ -360,6 +415,27 @@ export default function Dashboard() {
       console.error('Failed to persist mixer fill values:', error);
     }
   }, [templateMeta.scaleX, templateMeta.scaleY, templateMeta.x, templateMeta.y]);
+
+  useEffect(() => {
+    if (!hasLoadedPartyDataRef.current) {
+      return;
+    }
+
+    try {
+      window.localStorage.setItem(
+        PARTY_DATA_STORAGE_KEY,
+        JSON.stringify(
+          parties.map((party) => ({
+            name: party.name,
+            shortName: party.shortName,
+            seats: party.seats,
+          })),
+        ),
+      );
+    } catch (error) {
+      console.error('Failed to persist party data:', error);
+    }
+  }, [parties]);
 
   useEffect(() => {
     if (!hasLoadedWinnerMixerFillRef.current) {
@@ -485,6 +561,9 @@ export default function Dashboard() {
               }}
             >
               <h2>Party Data</h2>
+              <div style={{ fontSize: '14px', color: '#cbd5e1', lineHeight: 1.45 }}>
+                Party symbols folder: <strong>{'C:\\ProgramData\\ElectionGraphic\\party-symbols'}</strong>
+              </div>
               <div
                 style={editorRowStyle}
               >
@@ -555,7 +634,7 @@ export default function Dashboard() {
                     />
                   </div>
                 </div>
-                {parties.map((party, i) => (
+                {refreshedParties.map((party, i) => (
                   <div
                     key={i}
                     style={{
@@ -581,6 +660,7 @@ export default function Dashboard() {
                           alt={party.symbol || party.name}
                           width={44}
                           height={44}
+                          unoptimized
                           style={{ width: '100%', height: '100%', objectFit: 'contain' }}
                         />
                       ) : (
@@ -651,6 +731,13 @@ export default function Dashboard() {
                     flex: '0 0 138px',
                   }}
                 >
+                  <button
+                    onClick={() => setSymbolRefreshToken(Date.now())}
+                    style={{ background: '#f59e0b', color: 'white', padding: '16px 18px', border: 'none', borderRadius: '8px', fontSize: '18px', fontWeight: 'bold', cursor: 'pointer', boxShadow: '0 4px 12px rgba(245,158,11,0.35)', width: '100%' }}
+                  >
+                    Refresh Symbols
+                  </button>
+
                   <button
                     onClick={() => sendPartyGraphicCommand('play')}
                     style={{

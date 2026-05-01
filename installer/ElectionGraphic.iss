@@ -40,6 +40,8 @@ Source: "payload\app\*"; DestDir: "{app}\app"; Flags: recursesubdirs ignoreversi
 Source: "payload\data\mla.updated.xlsx"; DestDir: "{commonappdata}\{#DataDirName}"; DestName: "mla.updated.xlsx"; Flags: ignoreversion onlyifdoesntexist
 ; Editable MLA images. Users can add more images here and reference them from Excel.
 Source: "payload\data\mlas\*"; DestDir: "{commonappdata}\{#DataDirName}\mlas"; Flags: recursesubdirs ignoreversion onlyifdoesntexist
+; Editable party symbols. Users can replace files here without changing app code.
+Source: "payload\data\party-symbols\*"; DestDir: "{commonappdata}\{#DataDirName}\party-symbols"; Flags: recursesubdirs ignoreversion onlyifdoesntexist
 ; Private Node runtime
 Source: "payload\runtime\node\node.exe"; DestDir: "{app}\runtime\node"; Flags: ignoreversion
 Source: "payload\runtime\node\*"; DestDir: "{app}\runtime\node"; Flags: recursesubdirs ignoreversion; Excludes: "node.exe"
@@ -51,6 +53,7 @@ Source: "runtime\service.js"; DestDir: "{app}\runtime\service"; Flags: ignorever
 
 [Dirs]
 Name: "{commonappdata}\{#DataDirName}"; Permissions: users-modify
+Name: "{commonappdata}\{#DataDirName}\party-symbols"; Permissions: users-modify
 Name: "{app}\runtime\winsw\logs"
 Name: "{app}\runtime\service"
 
@@ -58,6 +61,7 @@ Name: "{app}\runtime\service"
 Name: "{group}\{#AppName}"; Filename: "http://localhost:16000"; IconFilename: "{app}\app\public\favicon.ico"; Flags: createonlyiffileexists
 Name: "{group}\Edit MLA Excel"; Filename: "{commonappdata}\{#DataDirName}\mla.updated.xlsx"; Flags: createonlyiffileexists
 Name: "{group}\Open MLA Images Folder"; Filename: "{win}\explorer.exe"; Parameters: """{commonappdata}\{#DataDirName}\mlas\west-bengal"""; Flags: createonlyiffileexists
+Name: "{group}\Open Party Symbols Folder"; Filename: "{win}\explorer.exe"; Parameters: """{commonappdata}\{#DataDirName}\party-symbols"""; Flags: createonlyiffileexists
 
 [Run]
 ; Install and start the service

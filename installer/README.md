@@ -48,6 +48,7 @@ The installer will:
 - Install into `{pf}\ElectionGraphic`
 - Copy the editable MLA workbook to `%ProgramData%\ElectionGraphic\mla.updated.xlsx`
 - Copy editable MLA photos to `%ProgramData%\ElectionGraphic\mlas\west-bengal`
+- Copy editable party symbols to `%ProgramData%\ElectionGraphic\party-symbols`
 - Create and start Windows Service `ElectionGraphicService`
 - Start the app on `http://localhost:16000`
 
@@ -60,8 +61,13 @@ To add more candidate photos after installation, copy them into
 in the first column, for example `new-candidate.jpg`. You can also use a relative path such
 as `mlas/west-bengal/new-candidate.jpg`.
 
+To replace party symbols after installation, copy a new image into
+`%ProgramData%\ElectionGraphic\party-symbols` using the same file name, for example
+`aitc-symbol.png`, `bjp-symbol.svg`, `cpim-symbol.png`, `inc-symbol.svg`, or `oth-symbol.svg`.
+Then press **Refresh Symbols** in the dashboard and **Update** the party template.
+
 ## Uninstall
 
 Uninstalling will stop and uninstall the Windows Service and remove installed program files.
-The editable workbook and image folder under `%ProgramData%\ElectionGraphic` are left in
+The editable workbook, image folder, and party symbol folder under `%ProgramData%\ElectionGraphic` are left in
 place as user data.

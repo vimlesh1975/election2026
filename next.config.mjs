@@ -43,7 +43,7 @@ const nextConfig = {
         headers: noStore,
       },
       {
-        source: '/aifb-symbol.svg',
+        source: '/oth-symbol.svg',
         headers: noStore,
       },
     ];

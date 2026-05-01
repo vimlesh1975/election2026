@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-labelledby="title desc">
+  <title id="title">Election stamp symbol</title>
+  <desc id="desc">A blue circular election stamp with a wooden handle and white mark.</desc>
+  <defs>
+    <linearGradient id="handle" x1="78" y1="9" x2="107" y2="57" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#4a1c0f"/>
+      <stop offset="0.28" stop-color="#bd6d3e"/>
+      <stop offset="0.55" stop-color="#6b2b17"/>
+      <stop offset="0.82" stop-color="#22120e"/>
+      <stop offset="1" stop-color="#b7f02a"/>
+    </linearGradient>
+    <linearGradient id="body" x1="16" y1="34" x2="114" y2="107" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#bff5ff"/>
+      <stop offset="0.28" stop-color="#308ce9"/>
+      <stop offset="0.65" stop-color="#1263c4"/>
+      <stop offset="1" stop-color="#062e77"/>
+    </linearGradient>
+    <linearGradient id="rim" x1="14" y1="58" x2="96" y2="112" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#47a6ff"/>
+      <stop offset="0.5" stop-color="#145cc4"/>
+      <stop offset="1" stop-color="#071f62"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="4" dy="5" stdDeviation="3" flood-color="#031338" flood-opacity="0.35"/>
+    </filter>
+  </defs>
+  <rect width="128" height="128" fill="#fff"/>
+  <g filter="url(#shadow)" transform="rotate(12 64 64)">
+    <path d="M80 12c9-7 22 2 20 13L91 72 69 69Z" fill="url(#handle)"/>
+    <path d="M89 24c2-3 6-4 9-2l-8 41-8-1Z" fill="#c9ff22" opacity="0.8"/>
+    <ellipse cx="61" cy="74" rx="53" ry="39" fill="url(#body)"/>
+    <path d="M14 68c7-23 31-38 58-35 23 3 41 18 43 37-9-14-28-24-50-25-25-2-46 8-51 23Z" fill="#d7fbff" opacity="0.74"/>
+    <ellipse cx="61" cy="79" rx="46" ry="31" fill="url(#rim)"/>
+    <ellipse cx="61" cy="78" rx="38" ry="24" fill="#1668d5"/>
+    <path d="M25 77c7-17 24-27 45-25 13 1 25 6 32 15-8-6-20-10-34-11-20-2-37 7-43 21Z" fill="#72bdfd" opacity="0.38"/>
+    <path d="M27 80c6 18 25 30 47 27 13-2 24-8 31-18-8 8-20 13-34 14-20 2-38-7-44-23Z" fill="#061d5e" opacity="0.22"/>
+    <path d="M28 72c6-12 18-19 34-20" fill="none" stroke="#c8f8e9" stroke-width="8" stroke-linecap="round"/>
+    <path d="M64 52c15 1 28 8 35 20" fill="none" stroke="#c8f8e9" stroke-width="8" stroke-linecap="round"/>
+    <path d="M30 88c9 10 22 15 36 15" fill="none" stroke="#c8f8e9" stroke-width="8" stroke-linecap="round"/>
+    <path d="M68 103c14-1 26-7 33-17" fill="none" stroke="#c8f8e9" stroke-width="8" stroke-linecap="round"/>
+    <path d="M61 55v48" fill="none" stroke="#c8f8e9" stroke-width="8" stroke-linecap="round"/>
+    <path d="M30 79h69" fill="none" stroke="#c8f8e9" stroke-width="8" stroke-linecap="round"/>
+    <path d="M28 72c6-12 18-19 34-20M64 52c15 1 28 8 35 20M30 88c9 10 22 15 36 15M68 103c14-1 26-7 33-17M61 55v48M30 79h69" fill="none" stroke="#9ee6d5" stroke-width="3" stroke-linecap="round" opacity="0.85"/>
+  </g>
+</svg>

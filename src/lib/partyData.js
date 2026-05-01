@@ -4,7 +4,7 @@ export const partyCatalog = {
     bengaliName: 'সর্বভারতীয় তৃণমূল কংগ্রেস',
     symbol: 'Flowers & Grass',
     bengaliSymbol: 'ফুল ও ঘাস',
-    symbolImage: '/aitc-symbol.png',
+    symbolImage: '/api/party-symbols/aitc-symbol.png',
     color: '#22c55e',
   },
   'bharatiya janata party': {
@@ -12,7 +12,7 @@ export const partyCatalog = {
     bengaliName: 'ভারতীয় জনতা পার্টি',
     symbol: 'Lotus',
     bengaliSymbol: 'পদ্ম',
-    symbolImage: '/bjp-symbol.svg',
+    symbolImage: '/api/party-symbols/bjp-symbol.svg',
     color: '#f97316',
   },
   'communist party of india (marxist)': {
@@ -20,7 +20,7 @@ export const partyCatalog = {
     bengaliName: 'ভারতের কমিউনিস্ট পার্টি (মার্কসবাদী)',
     symbol: 'Hammer, Sickle & Star',
     bengaliSymbol: 'হাতুড়ি, কাস্তে ও তারা',
-    symbolImage: '/cpim-symbol.png',
+    symbolImage: '/api/party-symbols/cpim-symbol.png',
     color: '#ef4444',
   },
   'indian national congress': {
@@ -28,16 +28,24 @@ export const partyCatalog = {
     bengaliName: 'ভারতীয় জাতীয় কংগ্রেস',
     symbol: 'Hand',
     bengaliSymbol: 'হাত',
-    symbolImage: '/inc-symbol.svg',
+    symbolImage: '/api/party-symbols/inc-symbol.svg',
     color: '#3b82f6',
   },
   'all india forward bloc': {
-    shortName: 'AIFB',
-    bengaliName: 'অল ইন্ডিয়া ফরওয়ার্ড ব্লক',
-    symbol: 'Lion',
-    bengaliSymbol: 'সিংহ',
-    symbolImage: '/aifb-symbol.png',
-    color: '#a855f7',
+    shortName: 'OTH',
+    bengaliName: 'Others',
+    symbol: 'Election Symbol',
+    bengaliSymbol: 'Election Symbol',
+    symbolImage: '/api/party-symbols/oth-symbol.svg',
+    color: '#64748b',
+  },
+  oth: {
+    shortName: 'OTH',
+    bengaliName: 'Others',
+    symbol: 'Election Symbol',
+    bengaliSymbol: 'Election Symbol',
+    symbolImage: '/api/party-symbols/oth-symbol.svg',
+    color: '#64748b',
   },
 };
 
@@ -46,7 +54,7 @@ export const defaultParties = [
   { name: 'Bharatiya Janata Party', seats: 75 },
   { name: 'Communist Party of India (Marxist)', seats: 37 },
   { name: 'Indian National Congress', seats: 24 },
-  { name: 'All India Forward Bloc', seats: 8 },
+  { name: 'OTH', seats: 8 },
 ];
 
 export const defaultTemplateMeta = {

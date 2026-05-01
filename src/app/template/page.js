@@ -33,7 +33,7 @@ export default function Home() {
   };
 
   return (
-    <main className="container">
+    <main className="container template-container">
       <PartySeats
         parties={activeData.parties}
         isPlaying={isPlaying}

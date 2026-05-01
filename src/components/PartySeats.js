@@ -179,6 +179,7 @@ export default function PartySeats({
                             alt={party.symbol}
                             width={56}
                             height={56}
+                            unoptimized
                             className="party-symbol-image"
                           />
                         ) : (

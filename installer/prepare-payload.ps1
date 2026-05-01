@@ -100,6 +100,26 @@ if (Test-Path -LiteralPath $mlaImagesSource -PathType Container) {
   Write-Host "WARNING: No MLA images folder found at public\mlas." -ForegroundColor Yellow
 }
 
+$partySymbolsOut = Join-Path $dataOut "party-symbols"
+New-Item -ItemType Directory -Path $partySymbolsOut -Force | Out-Null
+$partySymbolFiles = @(
+  "aitc-symbol.png",
+  "bjp-symbol.svg",
+  "cpim-symbol.png",
+  "inc-symbol.svg",
+  "oth-symbol.svg"
+)
+
+foreach ($symbolFile in $partySymbolFiles) {
+  $symbolSource = Join-Path (Join-Path $RepoRoot "public") $symbolFile
+  if (Test-Path -LiteralPath $symbolSource -PathType Leaf) {
+    Write-Host "Copying editable party symbol $symbolFile to data payload" -ForegroundColor Gray
+    Copy-Tree -From $symbolSource -To (Join-Path $partySymbolsOut $symbolFile)
+  } else {
+    Write-Host "WARNING: Party symbol not found at public\$symbolFile." -ForegroundColor Yellow
+  }
+}
+
 if (-not (Test-Path (Join-Path $appOut ".next"))) {
   Write-Host "WARNING: .next build output not found in payload. Run `npm run build` before packaging." -ForegroundColor Yellow
 }
