@@ -39,6 +39,26 @@ function normalizeStoredSeatValue(value, fallback) {
   return Number.isFinite(parsed) ? parsed : fallback;
 }
 
+function restoreStoredParty(storedParty, fallbackParty) {
+  const enrichedFallbackParty = enrichParty(fallbackParty);
+  const basePartyName = typeof storedParty?.name === 'string' && storedParty.name.trim()
+    ? storedParty.name
+    : enrichedFallbackParty.name;
+  const enrichedBaseParty = enrichParty({
+    ...enrichedFallbackParty,
+    name: basePartyName,
+  });
+  const storedShortName = typeof storedParty?.shortName === 'string'
+    ? storedParty.shortName
+    : enrichedBaseParty.shortName;
+
+  return {
+    ...enrichedBaseParty,
+    shortName: storedShortName,
+    seats: normalizeStoredSeatValue(storedParty?.seats, enrichedBaseParty.seats),
+  };
+}
+
 export default function Dashboard() {
   const [parties, setParties] = useState(() => defaultParties.map(enrichParty));
   const [templateMeta, setTemplateMeta] = useState(defaultTemplateMeta);
@@ -104,25 +124,9 @@ export default function Dashboard() {
         return;
       }
 
-      setParties(
-        defaultParties.map((defaultParty, index) => {
-          const enrichedDefaultParty = enrichParty(defaultParty);
-          const storedParty = parsed[index] || {};
-          const storedName = typeof storedParty.name === 'string' && storedParty.name.trim()
-            ? storedParty.name
-            : enrichedDefaultParty.name;
-          const storedShortName = typeof storedParty.shortName === 'string'
-            ? storedParty.shortName
-            : undefined;
-
-          return {
-            ...enrichedDefaultParty,
-            name: storedName,
-            shortName: storedShortName,
-            seats: normalizeStoredSeatValue(storedParty.seats, enrichedDefaultParty.seats),
-          };
-        }),
-      );
+      setParties(parsed.map((storedParty, index) => (
+        restoreStoredParty(storedParty, defaultParties[index] || defaultParties[0])
+      )));
     } catch (error) {
       console.error('Failed to restore party data:', error);
     } finally {
@@ -300,6 +304,20 @@ export default function Dashboard() {
     setParties(nextParties);
   };
 
+  const moveParty = (index, direction) => {
+    const targetIndex = index + direction;
+
+    if (targetIndex < 0 || targetIndex >= parties.length) {
+      return;
+    }
+
+    setParties((currentParties) => {
+      const nextParties = [...currentParties];
+      [nextParties[index], nextParties[targetIndex]] = [nextParties[targetIndex], nextParties[index]];
+      return nextParties;
+    });
+  };
+
   const updateTemplateMeta = (field, value) => {
     const numericFields = new Set(['totalSeats', 'x', 'y', 'scaleX', 'scaleY']);
     setTemplateMeta((current) => ({
@@ -394,6 +412,18 @@ export default function Dashboard() {
     justifyContent: 'center',
     padding: '8px',
     boxShadow: '0 12px 24px rgba(0,0,0,0.2)',
+  };
+  const reorderButtonStyle = {
+    width: '34px',
+    height: '34px',
+    borderRadius: '8px',
+    border: '1px solid rgba(255,255,255,0.18)',
+    background: 'rgba(15,23,42,0.75)',
+    color: '#f8fafc',
+    fontSize: '18px',
+    fontWeight: 900,
+    lineHeight: 1,
+    cursor: 'pointer',
   };
 
   useEffect(() => {
@@ -674,6 +704,43 @@ export default function Dashboard() {
                           }}
                         />
                       )}
+                    </div>
+                    <div
+                      style={{
+                        display: 'flex',
+                        gap: '8px',
+                        justifyContent: 'center',
+                        width: '100%',
+                      }}
+                    >
+                      <button
+                        type="button"
+                        onClick={() => moveParty(i, -1)}
+                        disabled={i === 0}
+                        title="Move party left"
+                        aria-label={`Move ${(party.shortName || party.name)} left`}
+                        style={{
+                          ...reorderButtonStyle,
+                          opacity: i === 0 ? 0.35 : 1,
+                          cursor: i === 0 ? 'not-allowed' : 'pointer',
+                        }}
+                      >
+                        {'<'}
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => moveParty(i, 1)}
+                        disabled={i === refreshedParties.length - 1}
+                        title="Move party right"
+                        aria-label={`Move ${(party.shortName || party.name)} right`}
+                        style={{
+                          ...reorderButtonStyle,
+                          opacity: i === refreshedParties.length - 1 ? 0.35 : 1,
+                          cursor: i === refreshedParties.length - 1 ? 'not-allowed' : 'pointer',
+                        }}
+                      >
+                        {'>'}
+                      </button>
                     </div>
                     <input
                       type="text"
