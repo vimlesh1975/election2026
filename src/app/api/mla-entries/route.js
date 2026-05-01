@@ -83,6 +83,46 @@ function getCell(row, keys) {
   return '';
 }
 
+function getRawCell(row, keys) {
+  for (const key of keys) {
+    if (Object.prototype.hasOwnProperty.call(row, key) && row[key] !== '') {
+      return row[key];
+    }
+  }
+
+  return undefined;
+}
+
+function isTruthySelection(value) {
+  if (value == null || value === '') {
+    return true;
+  }
+
+  if (typeof value === 'boolean') {
+    return value;
+  }
+
+  if (typeof value === 'number') {
+    return value !== 0;
+  }
+
+  const normalized = String(value).trim().toLowerCase();
+
+  if (!normalized) {
+    return true;
+  }
+
+  if (['true', 'yes', 'y', '1', 'show', 'take', 'display', 'checked', 'include', 'on'].includes(normalized)) {
+    return true;
+  }
+
+  if (['false', 'no', 'n', '0', 'hide', 'skip', 'omit', 'unchecked', 'exclude', 'off'].includes(normalized)) {
+    return false;
+  }
+
+  return true;
+}
+
 function normalizeRowKeys(row) {
   const normalized = {};
 
@@ -99,7 +139,7 @@ function isHeaderRow(cells) {
     .map((cell) => String(cell || '').toLowerCase().trim())
     .join(' ');
 
-  return /(file|filename|photo|image|text|headline|name|candidate|mla)/.test(joined);
+  return /(file|filename|photo|image|text|headline|name|candidate|mla|show|display|checked|take|include)/.test(joined);
 }
 
 function rowsFromMatrix(matrixRows) {
@@ -107,16 +147,33 @@ function rowsFromMatrix(matrixRows) {
     return [];
   }
 
-  const startIndex = isHeaderRow(matrixRows[0]) ? 1 : 0;
+  const hasHeaderRow = isHeaderRow(matrixRows[0]);
+  const headerKeys = hasHeaderRow
+    ? matrixRows[0].map((cell) => String(cell || '').toLowerCase().replace(/[\s_-]+/g, ''))
+    : [];
+  const startIndex = hasHeaderRow ? 1 : 0;
+
   return matrixRows
     .slice(startIndex)
     .map((cells) => {
-      const fileName = String(cells[0] || '').trim();
-      const text = String(cells[1] || '').trim();
-      const name = String(cells[2] || '').trim();
+      const row = hasHeaderRow
+        ? Object.fromEntries(headerKeys.map((key, index) => [key, cells[index]]))
+        : {};
+      const fileName = hasHeaderRow
+        ? getCell(row, ['file', 'filename', 'photopath', 'photo', 'image', 'imagename'])
+        : String(cells[0] || '').trim();
+      const text = hasHeaderRow
+        ? getCell(row, ['text', 'headline', 'resulttext', 'label', 'title'])
+        : String(cells[1] || '').trim();
+      const name = hasHeaderRow
+        ? getCell(row, ['name', 'candidate', 'mla', 'displayname'])
+        : String(cells[2] || '').trim();
+      const takeValue = hasHeaderRow
+        ? getRawCell(row, ['show', 'display', 'take', 'checked', 'selected', 'include', 'enabled'])
+        : cells[3];
       const photoPath = normalizePhotoPath(fileName);
 
-      if (!photoPath) {
+      if (!photoPath || !isTruthySelection(takeValue)) {
         return null;
       }
 
@@ -147,9 +204,10 @@ export async function GET() {
         const fileName = getCell(normalizedRow, ['file', 'filename', 'photopath', 'photo', 'image', 'imagename']);
         const text = getCell(normalizedRow, ['text', 'headline', 'resulttext', 'label', 'title']);
         const name = getCell(normalizedRow, ['name', 'candidate', 'mla', 'displayname']);
+        const takeValue = getRawCell(normalizedRow, ['show', 'display', 'take', 'checked', 'selected', 'include', 'enabled']);
         const photoPath = normalizePhotoPath(fileName);
 
-        if (!photoPath) {
+        if (!photoPath || !isTruthySelection(takeValue)) {
           return null;
         }
 
