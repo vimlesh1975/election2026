@@ -47,6 +47,12 @@ export async function POST(request) {
           amcpCmd = `CG ${channel}-${layer} ADD 1 "${url}" 1 "${payload}"\r\n`;
         } else if (command === 'update') {
           amcpCmd = `CG ${channel}-${layer} UPDATE 1 "${payload}"\r\n`;
+        } else if (command === 'mixerFill') {
+          const x = Number(data?.x ?? 0);
+          const y = Number(data?.y ?? 0);
+          const scaleX = Number(data?.scaleX ?? 1);
+          const scaleY = Number(data?.scaleY ?? 1);
+          amcpCmd = `MIXER ${channel}-${layer} FILL ${x} ${y} ${scaleX} ${scaleY}\r\n`;
         } else if (command === 'stop') {
           amcpCmd = `CG ${channel}-${layer} STOP 1\r\n`;
         } else if (command === 'clear') {

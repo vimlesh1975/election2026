@@ -52,6 +52,10 @@ export const defaultParties = [
 export const defaultTemplateMeta = {
   stateName: 'West Bengal',
   totalSeats: 254,
+  x: 0,
+  y: 0,
+  scaleX: 1,
+  scaleY: 1,
 };
 
 export function enrichParty(party) {
