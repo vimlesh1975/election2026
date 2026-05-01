@@ -561,9 +561,7 @@ export default function Dashboard() {
             order: 2,
             width: '100%',
             flex: '0 0 auto',
-            maxHeight: '52%',
             minWidth: 0,
-            overflowY: 'auto',
           }}
         >
           <div
