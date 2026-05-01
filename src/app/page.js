@@ -635,136 +635,156 @@ export default function Dashboard() {
               }}
             >
               <h2 style={{ margin: 0 }}>Party Seats Controls</h2>
-              <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap', justifyContent: 'flex-start' }}>
-                <button
-                  onClick={() => sendPartyGraphicCommand('play')}
-                  style={{ background: '#22c55e', color: 'white', padding: '16px 32px', border: 'none', borderRadius: '8px', fontSize: '18px', fontWeight: 'bold', cursor: 'pointer', boxShadow: '0 4px 12px rgba(34,197,94,0.4)' }}
-                >
-                  Show
-                </button>
-
-                <button
-                  onClick={() => sendPartyGraphicCommand('update')}
-                  style={{ background: '#3b82f6', color: 'white', padding: '16px 32px', border: 'none', borderRadius: '8px', fontSize: '18px', fontWeight: 'bold', cursor: 'pointer', boxShadow: '0 4px 12px rgba(59,130,246,0.4)' }}
-                >
-                  Update
-                </button>
-
-                <button
-                  onClick={() => sendPartyGraphicCommand('stop')}
-                  style={{ background: '#ef4444', color: 'white', padding: '16px 32px', border: 'none', borderRadius: '8px', fontSize: '18px', fontWeight: 'bold', cursor: 'pointer', boxShadow: '0 4px 12px rgba(239,68,68,0.4)' }}
-                >
-                  Stop
-                </button>
-
-                <button
-                  onClick={() => sendPartyGraphicCommand('clear')}
-                  style={{ background: '#64748b', color: 'white', padding: '16px 32px', border: 'none', borderRadius: '8px', fontSize: '18px', fontWeight: 'bold', cursor: 'pointer' }}
-                >
-                  Clear
-                </button>
-              </div>
               <div
                 style={{
                   display: 'flex',
-                  flexDirection: 'column',
-                  gap: '12px',
-                  marginTop: '8px',
+                  gap: '16px',
+                  alignItems: 'flex-start',
+                  justifyContent: 'space-between',
                 }}
               >
-                <div style={{ fontSize: '14px', color: '#cbd5e1', fontWeight: 700 }}>Mixer Fill</div>
                 <div
                   style={{
                     display: 'flex',
-                    gap: '10px',
-                    alignItems: 'stretch',
-                    justifyContent: 'flex-start',
-                    padding: '12px',
-                    borderRadius: '12px',
-                    border: '1px solid rgba(148,163,184,0.35)',
-                    background: 'rgba(15,23,42,0.45)',
-                    boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.06), 0 10px 24px rgba(0,0,0,0.18)',
-                    width: 'fit-content',
+                    flexDirection: 'column',
+                    gap: '12px',
+                    flex: '0 0 138px',
                   }}
                 >
-                  <div
+                  <button
+                    onClick={() => sendPartyGraphicCommand('play')}
                     style={{
-                      display: 'grid',
-                      gap: '8px',
-                      gridTemplateColumns: '60px',
+                      background: '#22c55e',
+                      color: 'white',
+                      padding: '16px 18px',
+                      border: 'none',
+                      borderRadius: '8px',
+                      fontSize: '18px',
+                      fontWeight: 'bold',
+                      cursor: 'pointer',
+                      boxShadow: '0 4px 12px rgba(34,197,94,0.4)',
+                      width: '100%',
                     }}
                   >
-                    <input
-                      type="number"
-                      step="0.01"
-                      value={templateMeta.x}
-                      onChange={(e) => updateTemplateMeta('x', e.target.value)}
-                      placeholder="X"
-                      style={{
-                        width: '60px',
-                        padding: '10px 8px',
-                        background: 'rgba(0,0,0,0.5)',
-                        border: '1px solid rgba(255,255,255,0.2)',
-                        color: 'white',
-                        borderRadius: '8px',
-                        fontSize: '12px',
-                      }}
-                    />
-                    <input
-                      type="number"
-                      step="0.01"
-                      value={templateMeta.y}
-                      onChange={(e) => updateTemplateMeta('y', e.target.value)}
-                      placeholder="Y"
-                      style={{
-                        width: '60px',
-                        padding: '10px 8px',
-                        background: 'rgba(0,0,0,0.5)',
-                        border: '1px solid rgba(255,255,255,0.2)',
-                        color: 'white',
-                        borderRadius: '8px',
-                        fontSize: '12px',
-                      }}
-                    />
-                    <input
-                      type="number"
-                      step="0.01"
-                      value={templateMeta.scaleX}
-                      onChange={(e) => updateTemplateMeta('scaleX', e.target.value)}
-                      placeholder="Scale X"
-                      style={{
-                        width: '60px',
-                        padding: '10px 8px',
-                        background: 'rgba(0,0,0,0.5)',
-                        border: '1px solid rgba(255,255,255,0.2)',
-                        color: 'white',
-                        borderRadius: '8px',
-                        fontSize: '12px',
-                      }}
-                    />
-                    <input
-                      type="number"
-                      step="0.01"
-                      value={templateMeta.scaleY}
-                      onChange={(e) => updateTemplateMeta('scaleY', e.target.value)}
-                      placeholder="Scale Y"
-                      style={{
-                        width: '60px',
-                        padding: '10px 8px',
-                        background: 'rgba(0,0,0,0.5)',
-                        border: '1px solid rgba(255,255,255,0.2)',
-                        color: 'white',
-                        borderRadius: '8px',
-                        fontSize: '12px',
-                      }}
-                    />
-                  </div>
-                  <button
-                    onClick={resetPartyMixerFill}
-                    style={{ background: '#f59e0b', color: 'white', padding: '12px 14px', border: 'none', borderRadius: '8px', fontSize: '14px', fontWeight: 'bold', cursor: 'pointer', boxShadow: '0 4px 12px rgba(245,158,11,0.4)', alignSelf: 'flex-start', minWidth: '60px' }}
-                  >
-                    Reset
+                    Show
                   </button>
+
+                  <button
+                    onClick={() => sendPartyGraphicCommand('update')}
+                    style={{ background: '#3b82f6', color: 'white', padding: '16px 18px', border: 'none', borderRadius: '8px', fontSize: '18px', fontWeight: 'bold', cursor: 'pointer', boxShadow: '0 4px 12px rgba(59,130,246,0.4)', width: '100%' }}
+                  >
+                    Update
+                  </button>
+
+                  <button
+                    onClick={() => sendPartyGraphicCommand('stop')}
+                    style={{ background: '#ef4444', color: 'white', padding: '16px 18px', border: 'none', borderRadius: '8px', fontSize: '18px', fontWeight: 'bold', cursor: 'pointer', boxShadow: '0 4px 12px rgba(239,68,68,0.4)', width: '100%' }}
+                  >
+                    Stop
+                  </button>
+                </div>
+                <div
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '12px',
+                    flex: '0 0 auto',
+                  }}
+                >
+                  <div style={{ fontSize: '14px', color: '#cbd5e1', fontWeight: 700 }}>Mixer Fill</div>
+                  <div
+                    style={{
+                      display: 'flex',
+                      gap: '10px',
+                      alignItems: 'stretch',
+                      justifyContent: 'flex-start',
+                      padding: '12px',
+                      borderRadius: '12px',
+                      border: '1px solid rgba(148,163,184,0.35)',
+                      background: 'rgba(15,23,42,0.45)',
+                      boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.06), 0 10px 24px rgba(0,0,0,0.18)',
+                      width: 'fit-content',
+                    }}
+                  >
+                    <div
+                      style={{
+                        display: 'grid',
+                        gap: '8px',
+                        gridTemplateColumns: '60px',
+                      }}
+                    >
+                      <input
+                        type="number"
+                        step="0.01"
+                        value={templateMeta.x}
+                        onChange={(e) => updateTemplateMeta('x', e.target.value)}
+                        placeholder="X"
+                        style={{
+                          width: '60px',
+                          padding: '10px 8px',
+                          background: 'rgba(0,0,0,0.5)',
+                          border: '1px solid rgba(255,255,255,0.2)',
+                          color: 'white',
+                          borderRadius: '8px',
+                          fontSize: '12px',
+                        }}
+                      />
+                      <input
+                        type="number"
+                        step="0.01"
+                        value={templateMeta.y}
+                        onChange={(e) => updateTemplateMeta('y', e.target.value)}
+                        placeholder="Y"
+                        style={{
+                          width: '60px',
+                          padding: '10px 8px',
+                          background: 'rgba(0,0,0,0.5)',
+                          border: '1px solid rgba(255,255,255,0.2)',
+                          color: 'white',
+                          borderRadius: '8px',
+                          fontSize: '12px',
+                        }}
+                      />
+                      <input
+                        type="number"
+                        step="0.01"
+                        value={templateMeta.scaleX}
+                        onChange={(e) => updateTemplateMeta('scaleX', e.target.value)}
+                        placeholder="Scale X"
+                        style={{
+                          width: '60px',
+                          padding: '10px 8px',
+                          background: 'rgba(0,0,0,0.5)',
+                          border: '1px solid rgba(255,255,255,0.2)',
+                          color: 'white',
+                          borderRadius: '8px',
+                          fontSize: '12px',
+                        }}
+                      />
+                      <input
+                        type="number"
+                        step="0.01"
+                        value={templateMeta.scaleY}
+                        onChange={(e) => updateTemplateMeta('scaleY', e.target.value)}
+                        placeholder="Scale Y"
+                        style={{
+                          width: '60px',
+                          padding: '10px 8px',
+                          background: 'rgba(0,0,0,0.5)',
+                          border: '1px solid rgba(255,255,255,0.2)',
+                          color: 'white',
+                          borderRadius: '8px',
+                          fontSize: '12px',
+                        }}
+                      />
+                    </div>
+                    <button
+                      onClick={resetPartyMixerFill}
+                      style={{ background: '#f59e0b', color: 'white', padding: '12px 14px', border: 'none', borderRadius: '8px', fontSize: '14px', fontWeight: 'bold', cursor: 'pointer', boxShadow: '0 4px 12px rgba(245,158,11,0.4)', alignSelf: 'flex-start', minWidth: '60px' }}
+                    >
+                      Reset
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -998,13 +1018,6 @@ export default function Dashboard() {
                   style={{ background: '#ef4444', color: 'white', padding: '16px 18px', border: 'none', borderRadius: '8px', fontSize: '18px', fontWeight: 'bold', cursor: 'pointer', boxShadow: '0 4px 12px rgba(239,68,68,0.4)', width: '100%' }}
                 >
                   Stop
-                </button>
-
-                <button
-                  onClick={() => sendWinnerGraphicCommand('clear')}
-                  style={{ background: '#64748b', color: 'white', padding: '16px 18px', border: 'none', borderRadius: '8px', fontSize: '18px', fontWeight: 'bold', cursor: 'pointer', width: '100%' }}
-                >
-                  Clear
                 </button>
               </div>
               <div
